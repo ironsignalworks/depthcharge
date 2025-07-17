@@ -2,10 +2,11 @@
 html, body {
     margin: 0;
     padding: 0;
-    height: 100%;
-    overflow: hidden;
+    min-height: 100vh;
     font-family: 'Roboto Mono', monospace;
     background: url('bg.png') center/cover no-repeat black;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* --- Game Section Layout --- */
@@ -22,6 +23,11 @@ html, body {
     box-sizing: border-box;
     text-align: center;
 }
+.game-section {
+    flex-wrap: wrap;
+    overflow: visible;
+}
+
 
 /* --- Headings --- */
 .game-section h1 {
