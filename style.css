@@ -15,34 +15,28 @@ html, body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
     align-items: center;
-    justify-content: flex-start;
     padding: 1rem;
     color: #00ffaa;
     background: rgba(0, 0, 0, 0.7);
-    box-sizing: border-box;
     text-align: center;
-    overflow: visible;
+    box-sizing: border-box;
 }
 
 /* --- Headings --- */
 .game-section h1 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
     margin: 10px 0;
-    font-size: 2.5em;
     color: #00ffaa;
     text-shadow: 0 0 10px #00ffaa;
 }
 
-.game-section p {
-    font-size: 1.2em;
+.game-section p,
+#message,
+#torpedoCount {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
     margin-bottom: 0.5em;
-}
-
-#message, #torpedoCount {
-    font-size: 1.5em;
     text-shadow: 0 0 5px #00ffaa;
-    margin: 10px 0 30px;
 }
 
 /* --- Game Container --- */
@@ -50,21 +44,21 @@ html, body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 2rem;
+    gap: 1.5rem;
     padding: 0 1rem;
     width: 100%;
-    max-width: 1100px;
-    margin-bottom: 30px;
+    max-width: 100%;
+    margin-bottom: 2rem;
 }
 
 /* --- Game Board --- */
 #board {
     display: grid;
-    grid-template-columns: repeat(10, 30px);
-    grid-template-rows: repeat(10, 30px);
-    gap: 4px;
+    grid-template-columns: repeat(10, minmax(2vw, 8vmin));
+    grid-template-rows: repeat(10, minmax(2vw, 8vmin));
+    gap: 0.3vmin;
     background-color: rgba(0, 77, 77, 0.8);
-    padding: 8px;
+    padding: 0.6vmin;
     border: 2px solid #00ffaa;
     border-radius: 8px;
     box-shadow: 0 0 15px #00ffaa;
@@ -72,30 +66,29 @@ html, body {
 
 /* --- Cells --- */
 .cell {
-    width: 30px;
-    height: 30px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
     background-color: #004d4d;
     border: 1px solid #00ffaa;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 1.5em;
+    font-size: clamp(0.8rem, 3vw, 1.4rem);
     font-weight: bold;
     color: yellow;
     text-shadow: 0 0 5px orange;
 }
 
+/* --- Cell States --- */
 .cell.hit {
     background-color: #ff3333;
     box-shadow: 0 0 10px #ff5555;
     cursor: default;
 }
-
 .cell.hit::after {
     content: '💥';
     animation: hitEffect 0.5s ease-out forwards;
-    display: block;
     transform: scale(0);
     opacity: 0;
 }
@@ -105,11 +98,9 @@ html, body {
     opacity: 0.7;
     cursor: default;
 }
-
 .cell.miss::after {
     content: '🌊';
     animation: missEffect 0.5s ease-out forwards;
-    display: block;
     transform: scale(0);
     opacity: 0;
 }
@@ -119,11 +110,9 @@ html, body {
     box-shadow: 0 0 15px 5px #FF4500;
     color: #FFD700;
 }
-
 .cell.sunk-part::after {
     content: '💀';
     animation: sunkEffect 1.2s ease-out forwards;
-    display: block;
     transform: scale(0);
     opacity: 0;
 }
@@ -133,16 +122,16 @@ html, body {
     background: rgba(0, 34, 34, 0.9);
     border: 2px solid #00ffaa;
     border-radius: 8px;
-    padding: 15px;
-    width: 260px;
+    padding: 1rem;
+    width: clamp(220px, 25vw, 260px);
     color: #00ffbb;
     box-shadow: 0 0 15px #00ffaa;
-    font-size: 1.2em;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
 }
 
 #shipStatus h2 {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
     margin-bottom: 10px;
-    font-size: 1.5em;
     border-bottom: 1px solid #00ffaa;
     padding-bottom: 5px;
     text-shadow: 0 0 6px #00ffaa;
@@ -153,12 +142,10 @@ html, body {
     padding: 0;
     margin: 0;
 }
-
 #shipStatus li {
-    padding: 8px 5px;
+    padding: 6px 4px;
     border-bottom: 1px dotted #008877;
 }
-
 #shipStatus li.sunk {
     color: #ff4444;
     text-decoration: line-through;
@@ -176,8 +163,8 @@ html, body {
 }
 
 .controls button {
-    padding: 10px 18px;
-    font-size: 1em;
+    padding: 0.6rem 1rem;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
     background-color: #002222;
     color: #00ffaa;
     border: 2px solid #00ffaa;
@@ -191,7 +178,7 @@ html, body {
     color: #aaffcc;
 }
 
-/* --- Popup / Overlays --- */
+/* --- Popup / Overlay --- */
 .popup, .overlay-container {
     position: fixed;
     z-index: 1000;
@@ -202,7 +189,7 @@ html, body {
     left: 50%;
     transform: translate(-50%, -50%);
     background: rgba(10, 10, 10, 0.95);
-    padding: 20px;
+    padding: 1.5rem;
     border: 2px solid #ccc;
     border-radius: 10px;
     color: white;
@@ -210,7 +197,8 @@ html, body {
 }
 
 .popup img {
-    max-width: 500px;
+    max-width: 90vw;
+    max-height: 70vh;
     margin-bottom: 10px;
     border-radius: 5px;
 }
@@ -229,14 +217,14 @@ html, body {
 }
 
 .overlay-content h1 {
-    font-size: 4em;
+    font-size: clamp(2rem, 6vw, 4rem);
     color: #ff4444;
     text-shadow: 0 0 15px #ff0000;
 }
 
 .overlay-content button {
-    padding: 10px 18px;
-    font-size: 1em;
+    padding: 0.8rem 1.2rem;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
     background-color: #002222;
     color: #00ffaa;
     border: 2px solid #00ffaa;
@@ -274,48 +262,5 @@ html, body {
     to {
         transform: scale(1.5);
         opacity: 1;
-    }
-}
-
-/* --- Responsive --- */
-@media (max-width: 768px) {
-    #gameContainer {
-        padding: 0;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #board {
-        grid-template-columns: repeat(10, 22px);
-        grid-template-rows: repeat(10, 22px);
-    }
-
-    .cell {
-        width: 22px;
-        height: 22px;
-        font-size: 1em;
-    }
-
-    #shipStatus {
-        width: 90%;
-        font-size: 0.9em;
-    }
-
-    .controls {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .controls button {
-        font-size: 0.85em;
-        padding: 7px 12px;
-    }
-
-    .game-section h1 {
-        font-size: 1.7em;
-    }
-
-    #message, #torpedoCount {
-        font-size: 1em;
     }
 }
