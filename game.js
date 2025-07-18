@@ -1,16 +1,9 @@
-let hasInteracted = false;
-
-document.body.addEventListener('click', () => {
-    if (!hasInteracted) {
-        backgroundMusic.play().catch(e => console.log("Autoplay blocked:", e));
-        hasInteracted = true;
-    }
-});
 
 document.addEventListener("DOMContentLoaded", () => {
     const gridSize = 10;
     const numShips = 5;
     let torpedoes, shipsSunk, isGameOver, hasStarted;
+    let hasInteracted = false;
 
     const ships = [
         { name: "Yamato", size: 5 },
@@ -48,6 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const board = [];
     let shipBoard = [];
+
+    document.body.addEventListener('click', () => {
+        if (!hasInteracted && backgroundMusic) {
+            backgroundMusic.play().catch(e => console.log("Autoplay blocked:", e));
+            hasInteracted = true;
+        }
+    }, { once: true });
 
     function initGame() {
         torpedoes = 30;
@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
             messageDiv.textContent = `${ship.name} has been sunk!`;
             playSound(sunkSound);
 
-            $( `ship-${slugify(ship.name)}` ).classList.add("sunk");
+            $(`ship-${slugify(ship.name)}`).classList.add("sunk");
 
             ship.cells.forEach(id => {
                 const [r, c] = id.split("-").map(Number);
@@ -247,7 +247,6 @@ document.addEventListener("DOMContentLoaded", () => {
         muteButton.textContent = backgroundMusic.muted ? "Unmute Music" : "Mute Music";
     }
 
-    // Listeners
     resetButton.addEventListener('click', initGame);
     playAgainButton.addEventListener('click', initGame);
     muteButton.addEventListener('click', toggleMute);
