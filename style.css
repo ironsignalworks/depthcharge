@@ -76,6 +76,8 @@ html, body {
     border: 2px solid #00ffaa;
     border-radius: 8px;
     box-shadow: 0 0 15px #00ffaa;
+max-width: 500px;  /* Try changing to 550px or 500px */
+
 }
 
 /* --- Cells --- */
