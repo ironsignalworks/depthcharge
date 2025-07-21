@@ -2,7 +2,7 @@ html, body {
     margin: 0;
     padding: 0;
     min-height: 100dvh;
-    font-size: 75%;
+    font-size: 60%;
     box-sizing: border-box;
     font-family: 'Roboto Mono', monospace;
     background: url('bg.png') center/cover no-repeat black;
@@ -38,12 +38,12 @@ html, body {
 }
 
 .game-section h1 {
-    margin: 10px 0 5px;
+    margin: 6px 0 5px;
     font-size: 3.5em;
 }
 
 .game-section p {
-    font-size: 1.5em;
+    font-size: 2.5em;
     margin: 5px 0 15px;
 }
 
@@ -144,7 +144,7 @@ html, body {
     padding: 10px;
     width: 200px;
     box-shadow: 0 0 15px #00ffaa;
-    font-size: 1.17em;
+    font-size: 1.7em;
     text-shadow: 0 0 6px #00ffaa;
 }
 
@@ -184,7 +184,7 @@ html, body {
 
 .controls button {
     padding: 9px 18px;
-    font-size: 1.04em;
+    font-size: 1.7em;
     background-color: #002222;
     color: #00ffaa;
     border: 2px solid #00ffaa;
