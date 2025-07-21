@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
     const gridSize = 10;
     const numShips = 5;
@@ -77,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function createBoard() {
+        console.log("Creating board..."); // Debugging statement
         for (let r = 0; r < gridSize; r++) {
             const row = [];
             for (let c = 0; c < gridSize; c++) {
@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             board.push(row);
         }
+        console.log("Board created:", board); // Debugging statement
     }
 
     function populateShipList() {
