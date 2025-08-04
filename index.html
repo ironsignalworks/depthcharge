@@ -4,58 +4,42 @@
   <meta charset="UTF-8">
   <title>DEPTHCHARGE 666</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- SEO -->
   <meta name="description" content="DEPTHCHARGE 666 - Wipe out the enemy fleet!">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-
-
-  <!-- Open Graph -->
   <meta property="og:title" content="DEPTHCHARGE 666">
   <meta property="og:description" content="Wipe Out The Enemy Fleet!">
   <meta property="og:image" content="https://i.ibb.co/gLHnvWqm/download-8.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:url" content="https://ironsignalworks.github.io/depthcharge666/">
   <meta property="og:type" content="website">
-
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="DEPTHCHARGE 666">
   <meta name="twitter:description" content="Wipe Out The Enemy Fleet!">
   <meta name="twitter:image" content="https://i.ibb.co/gLHnvWqm/download-8.png">
-
-  <!-- Fonts and Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
   <main class="game-section" role="main">
     <h1>DEPTHCHARGE 666</h1>
     <p>Wipe out the enemy fleet!</p>
-
     <div id="message" aria-live="polite">Make your first move!</div>
     <div id="torpedoCount"></div>
-
     <div id="gameContainer">
       <div id="board"></div>
-
       <aside id="shipStatus">
         <h2>Ship Status</h2>
         <ul id="shipsList"></ul>
       </aside>
-
       <div id="sunkPopup" class="popup hidden">
         <img id="sunkImage" src="" alt="Sunk Ship">
         <p id="sunkShipName">Ship Sunk!</p>
       </div>
     </div>
-
     <div class="controls">
       <button id="resetButton">Restart Game</button>
       <button id="muteButton">Mute Music</button>
     </div>
-
     <div id="gameOverOverlay" class="overlay-container hidden">
       <div class="overlay-content">
         <h1>Game Over</h1>
@@ -63,7 +47,6 @@
       </div>
     </div>
   </main>
-
   <!-- Audio -->
   <audio id="hitSound" src="sounds/hit.mp3" preload="auto"></audio>
   <audio id="missSound" src="sounds/miss.mp3" preload="auto"></audio>
@@ -71,7 +54,6 @@
   <audio id="winSound" src="sounds/win.wav" preload="auto"></audio>
   <audio id="loseSound" src="sounds/lose.mp3" preload="auto"></audio>
   <audio id="backgroundMusic" src="sounds/background.mp3" preload="auto" loop></audio>
-
   <script src="game.js"></script>
 </body>
 </html>
