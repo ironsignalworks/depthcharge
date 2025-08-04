@@ -1,30 +1,30 @@
 html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  min-height: 100dvh;
   font-family: 'Roboto Mono', monospace;
   font-size: 62.5%; /* 1rem = 10px */
   background: url('bg.png') center/cover no-repeat #000;
   color: #00ffaa;
   text-shadow: 0 0 6px #00ffaa;
-  width: 100%;
+  overflow-x: hidden;
   box-sizing: border-box;
-  /* No forced min-height, no overflow-x! */
 }
 
+/* Utility for box-sizing everywhere */
 *, *::before, *::after {
   box-sizing: inherit;
 }
 
-/* MAIN GAME SECTION */
 .game-section {
+  min-height: 100vh;
   width: 100%;
-  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem 0 0 0;
   background: rgba(0,0,0,0.6);
-  /* Let section grow/shrink */
 }
 
 .game-section h1 {
@@ -39,22 +39,26 @@ html, body {
   text-shadow: 0 0 6px #00ffaa;
 }
 
-/* GAME CONTAINER */
 #gameContainer {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  gap: 2vw;
+  gap: 28px;
   width: 100%;
   max-width: 480px;
   margin: 0 auto 2.5rem auto;
   flex-wrap: wrap;
-  box-sizing: border-box;
 }
 
-/* BOARD */
+/* ---- GAME BOARD ---- */
 #board {
+  width: 200px;
+  height: 200px;
+  min-width: 200px;
+  min-height: 200px;
+  max-width: 200px;
+  max-height: 200px;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
@@ -64,53 +68,27 @@ html, body {
   border: 2px solid #00ffaa;
   border-radius: 8px;
   box-shadow: 0 0 15px #00ffaa;
-  width: min(43vw, 180px);  /* Board will always fit on any screen! */
-  height: min(43vw, 180px);
-  aspect-ratio: 1 / 1;
-  min-width: 110px;
-  min-height: 110px;
-  max-width: 180px;
-  max-height: 180px;
 }
 
-.cell {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 1/1;
-  background-color: #004d4d;
-  border: 1px solid #00ffaa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: yellow;
-  text-shadow: 0 0 5px orange;
-}
-
-.cell.hit { background-color: #ff3333; box-shadow: 0 0 10px #ff5555; cursor: default; }
-.cell.miss { background-color: #999; opacity: 0.7; cursor: default; }
-.cell.sunk-part { background-color: #8B0000; box-shadow: 0 0 15px 5px #FF4500; color: #FFD700; }
-
-/* SIDEBAR */
+/* ---- SIDEBAR ---- */
 #shipStatus {
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+  margin: 0 0 0 0;
   background: rgba(0, 34, 34, 0.92);
   border: 2px solid #00ffaa;
   border-radius: 8px;
   padding: 1.2rem 0.7rem;
-  width: min(30vw, 90px);
-  min-width: 70px;
-  max-width: 100px;
-  margin: 0 0 0 1vw;
   box-shadow: 0 0 15px #00ffaa;
-  font-size: 1.02rem;
+  font-size: 1.1rem;
   text-shadow: 0 0 6px #00ffaa;
   text-align: center;
   align-self: flex-start;
 }
+
 #shipStatus h2 {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   margin: 0 0 10px 0;
   border-bottom: 1px solid #00ffaa;
   padding-bottom: 0.3em;
@@ -123,7 +101,7 @@ html, body {
   text-align: center;
 }
 #shipStatus li {
-  padding: 4px 0 4px 0;
+  padding: 5px 0 4px 0;
   border-bottom: 1px dotted #008877;
 }
 #shipStatus li.sunk {
@@ -133,7 +111,28 @@ html, body {
   opacity: 0.7;
 }
 
-/* CONTROLS */
+/* ---- BOARD CELLS ---- */
+.cell {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1/1;
+  background-color: #004d4d;
+  border: 1px solid #00ffaa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: yellow;
+  text-shadow: 0 0 5px orange;
+}
+
+.cell.hit { background-color: #ff3333; box-shadow: 0 0 10px #ff5555; cursor: default; }
+.cell.miss { background-color: #999; opacity: 0.7; cursor: default; }
+.cell.sunk-part { background-color: #8B0000; box-shadow: 0 0 15px 5px #FF4500; color: #FFD700; }
+
+/* ---- CONTROLS ---- */
 .controls {
   margin-top: 1rem;
   display: flex;
@@ -143,7 +142,7 @@ html, body {
 }
 .controls button {
   padding: 0.7em 1.2em;
-  font-size: 1.13rem;
+  font-size: 1.15rem;
   background-color: #002222;
   color: #00ffaa;
   border: 2px solid #00ffaa;
@@ -157,7 +156,7 @@ html, body {
   color: #aaffcc;
 }
 
-/* POPUPS/OVERLAY */
+/* ---- POPUPS/OVERLAY ---- */
 .popup, .overlay-container {
   position: fixed;
   z-index: 1000;
@@ -175,7 +174,7 @@ html, body {
   text-shadow: 0 0 6px #00ffaa;
 }
 .popup img {
-  max-width: 130px;
+  max-width: 200px;
   margin-bottom: 10px;
   border-radius: 5px;
 }
@@ -222,51 +221,44 @@ html, body {
 }
 .hidden { display: none; }
 
-/* RESPONSIVE: MOBILE STACKING */
+/* ---- MOBILE LAYOUT ---- */
 @media (max-width: 700px) {
-  .game-section {
-    min-height: unset;
-    height: auto;
-    padding-bottom: 2.5rem;
-  }
   #gameContainer {
     flex-direction: column;
     align-items: center;
     max-width: 100vw;
-    width: 100vw;
-    gap: 10px;
-    margin-bottom: 1rem;
-    overflow: unset;
-    height: auto;
+    gap: 14px;
   }
   #board {
-    width: 86vw;
-    height: 86vw;
-    min-width: 95px;
-    min-height: 95px;
-    max-width: 150px;
-    max-height: 150px;
+    width: 90vw !important;
+    height: 90vw !important;
+    min-width: 120px !important;
+    min-height: 120px !important;
+    max-width: 300px !important;
+    max-height: 300px !important;
   }
   #shipStatus {
-    width: 86vw;
-    max-width: 110px;
-    min-width: 60px;
-    margin: 10px auto 0 auto;
-    font-size: 0.95rem;
+    width: 90vw !important;
+    max-width: 220px !important;
+    min-width: 110px !important;
+    margin: 12px auto 0 auto !important;
+    font-size: 1rem;
   }
   .controls {
     flex-direction: column;
-    gap: 7px;
+    gap: 8px;
+    width: 98vw;
   }
   .controls button {
-    width: 90vw;
-    max-width: 140px;
-    min-width: 70px;
-    font-size: 1.06rem;
-    padding: 0.7em 0;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
   }
-  .popup img { max-width: 88vw; }
-  .overlay-content h1 { font-size: 2rem; }
+  html, body {
+    min-height: 100vh;
+    height: auto;
+    overflow-y: auto;
+  }
 }
 
 /* Nice scrollbars */
