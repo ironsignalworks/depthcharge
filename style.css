@@ -4,7 +4,7 @@ html, body {
   min-height: 100dvh;
   width: 100vw;
   font-family: 'Roboto Mono', monospace;
-  font-size: 62.5%; /* 1rem = 10px for easier scaling */
+  font-size: 62.5%; /* 1rem = 10px */
   background: url('bg.png') center/cover no-repeat #000;
   color: #00ffaa;
   text-shadow: 0 0 6px #00ffaa;
@@ -37,7 +37,6 @@ html, body {
   text-shadow: 0 0 6px #00ffaa;
 }
 
-/* GAME LAYOUT */
 #gameContainer {
   display: flex;
   flex-direction: row;
@@ -50,7 +49,6 @@ html, body {
   flex-wrap: wrap;
 }
 
-/* GAME BOARD */
 #board {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
@@ -61,11 +59,11 @@ html, body {
   border: 2px solid #00ffaa;
   border-radius: 8px;
   box-shadow: 0 0 15px #00ffaa;
-  width: min(30vw, 330px);
-  height: min(30vw, 330px);
+  width: min(26vw, 260px);      /* << Downsized for desktop */
+  height: min(26vw, 260px);
   aspect-ratio: 1 / 1;
-  min-width: 170px;
-  min-height: 170px;
+  min-width: 130px;
+  min-height: 130px;
 }
 
 .cell {
@@ -106,7 +104,7 @@ html, body {
   border: 2px solid #00ffaa;
   border-radius: 8px;
   padding: 1.4rem 1rem;
-  width: min(28vw, 250px);
+  width: min(28vw, 220px);
   min-width: 120px;
   max-width: 96vw;
   margin: 0 0 0 1vw;
@@ -194,13 +192,23 @@ html, body {
   justify-content: center;
   align-items: center;
 }
+.overlay-content {
+  text-align: center;
+  width: 100%;
+}
 .overlay-content h1 {
-  font-size: 2.6rem;
+  font-size: 10rem;         /* << LARGER Game Over */
   color: #ff4444;
-  text-shadow: 0 0 15px #ff0000;
-  margin-bottom: 20px;
+  font-weight: bold;
+  text-shadow: 0 0 22px #ff0000, 0 0 10px #ff0000;
+  margin-bottom: 0.2em;
+  margin-top: 0;
+  text-align: center;
+  letter-spacing: 0.03em;
 }
 .overlay-content button {
+  display: block;
+  margin: 0 auto;
   padding: 10px 18px;
   font-size: 1.3rem;
   background-color: #002222;
@@ -228,24 +236,25 @@ html, body {
     width: 100vw;
   }
   #board {
-    width: min(94vw, 350px);
-    height: min(94vw, 350px);
-    min-width: 120px;
-    min-height: 120px;
+    width: min(88vw, 300px);
+    height: min(88vw, 300px);
+    min-width: 110px;
+    min-height: 110px;
   }
   #shipStatus {
-    width: 94vw;
-    max-width: 350px;
-    min-width: 100px;
+    width: 88vw;
+    max-width: 300px;
+    min-width: 80px;
     margin: 12px auto 0 auto;
     font-size: 1.1rem;
   }
 }
 @media (max-width: 500px) {
   .game-section h1 { font-size: 2rem; }
-  #board { width: 92vw; height: 92vw; }
-  #shipStatus { width: 92vw; font-size: 0.98rem; }
+  #board { width: 88vw; height: 88vw; }
+  #shipStatus { width: 88vw; font-size: 0.98rem; }
   .controls button { font-size: 1.1rem; }
+  .overlay-content h1 { font-size: 2.3rem; }
 }
 
 /* Nice scrollbars */
