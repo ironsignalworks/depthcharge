@@ -1,0 +1,39 @@
+/* Viewport normalization */
+html, body {
+    width: 100%;
+    min-height: 100svh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: none;
+}
+body {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right)
+             env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+img, video, canvas, svg {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+main, .game-section {
+    min-height: 100svh;
+    max-width: 100dvw;
+}
+#gameContainer {
+    max-width: 100dvw;
+    overflow-x: hidden;
+}
+.popup, .overlay-container {
+    width: 100dvw;
+    max-width: 100dvw;
+    height: 100svh;
+    max-height: 100svh;
+}
+:where([style*="object-fit:cover"]) { object-fit: contain !important; }
+:where([style*="width:100vw"]) { max-width: 100dvw; }
+:where([style*="height:100vh"]) { min-height: 100svh; }
