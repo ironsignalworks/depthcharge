@@ -15,7 +15,7 @@ html, body {
 }
 *, *::before, *::after { box-sizing: inherit; }
 
-/* ===== Responsive sizing vars (conservative to avoid overflow) ===== */
+/* ===== Responsive sizing vars (desktop/tablet) ===== */
 :root {
   --gap: clamp(12px, 2.2vmin, 24px);
   --sidebarW: clamp(160px, 19vw, 260px);
@@ -38,7 +38,7 @@ html, body {
   background: rgba(0,0,0,0.6);
 }
 
-/* Header text: Press Start 2P */
+/* Headline uses Press Start 2P; rest uses Roboto Mono */
 .game-section h1 {
   font-family: "Press Start 2P", monospace;
   font-size: clamp(2.2rem, 3.5vw, 3.2rem);
@@ -125,7 +125,7 @@ html, body {
   background-repeat: no-repeat;
   background-size: contain;
 }
-.cell.hit { background-color: #ff3333; box-shadow: 0 0 10px #ff5555; cursor: default; }
+.cell.hit  { background-color: #ff3333; box-shadow: 0 0 10px #ff5555; cursor: default; }
 .cell.miss { background-color: #999; opacity: 0.7; cursor: default; }
 .cell.sunk-part { background-color: #8B0000; box-shadow: 0 0 15px 5px #FF4500; color: #FFD700; }
 
@@ -226,18 +226,18 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
 }
 #sunkPopup.hidden { display: none !important; }
 
-/* Title uses Press Start 2P */
+/* Sunk title uses Roboto Mono (only main/game-over titles use 2P) */
 #sunkShipName {
   order: 0;
-  font-family: "Press Start 2P", monospace;
-  font-size: clamp(1.6rem, 4.2vw, 3rem);
+  font-family: "Roboto Mono", monospace;
+  font-size: clamp(1.6rem, 4.2vw, 2.4rem);
   color: #ffdddd;
   text-shadow: 0 0 10px rgba(255,0,0,0.7);
   margin: 0 0 1rem 0;
   text-align: center;
 }
 
-/* Image */
+/* Sunk image */
 #sunkImage {
   order: 1;
   display: block !important;
@@ -250,4 +250,76 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
   object-fit: contain !important;
   image-rendering: pixelated;
   box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+}
+
+/* ==== MOBILE STACK (no scroll, balanced spacing) ==== */
+@media (max-width: 560px) {
+  :root{
+    --controlsH: 74px;                        /* bottom bar height */
+    --headerH: clamp(76px, 15vh, 112px);      /* title + messages */
+    /* Make board smaller so ship panel + buttons always fit */
+    --boardSize: min(72vw, 40svh, 270px);
+  }
+
+  html, body { overflow: hidden; height: 100svh; }
+
+  #gameContainer {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    width: 100%;
+    max-width: 100dvw;
+    max-height: calc(100svh - var(--controlsH));
+    padding-bottom: 6px;
+  }
+
+  .game-section { grid-template-rows: auto 1fr auto; padding-top: 8px; }
+  .game-section h1 { margin-top: .2rem; }
+  #message, #torpedoCount { margin: .2rem 0 .4rem; }
+
+  #board {
+    width: var(--boardSize);
+    height: var(--boardSize);
+    min-width: 180px;
+    min-height: 180px;
+    gap: 1.5px;
+    padding: 4px;
+    border-width: 1.5px;
+  }
+
+  #shipStatus {
+    width: 92vw;
+    max-width: 92vw;
+    margin-top: 6px;
+    max-height: calc(100svh - var(--headerH) - var(--controlsH) - var(--boardSize) - 20px);
+    overflow: auto;
+    font-size: 0.95rem;
+  }
+  #shipStatus h2 { font-size: 1rem; }
+
+  .controls {
+    position: fixed;
+    left: 0; right: 0;
+    bottom: env(safe-area-inset-bottom, 0);
+    height: var(--controlsH);
+    padding: 8px max(10px, env(safe-area-inset-left)) 10px max(10px, env(safe-area-inset-right));
+    margin: 0;
+    gap: 10px;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.35) 35%, rgba(0,0,0,.55) 100%);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10060;
+  }
+  .controls button {
+    flex: 1 1 auto;
+    max-width: 46%;
+    padding: 0.6em 0.8em;
+    font-size: 0.9rem;
+  }
+
+  #sunkPopup { z-index: 10070 !important; }
+  #gameOverOverlay { z-index: 10080 !important; }
 }
