@@ -31,11 +31,11 @@ html, body {
   grid-template-rows: auto 1fr auto;   /* title | game | controls (desktop) */
   align-items: start;
   justify-items: center;
-  padding: 0 1.2rem;                   /* no top padding by default */
+  padding: 0 1.2rem;
   background: rgba(0,0,0,0.6);
 }
 
-/* Headline uses 2P; rest uses Roboto Mono */
+/* Headline */
 .game-section h1 {
   font-family: "Press Start 2P", monospace;
   font-size: clamp(2.2rem, 3.5vw, 3.2rem);
@@ -59,7 +59,7 @@ html, body {
   width: 100%;
   max-width: 96dvw;
   max-height: calc(100svh - 10rem);
-  margin: .15rem auto 0;               /* tight under text */
+  margin: .15rem auto 0;
   flex-wrap: nowrap;
 }
 
@@ -100,12 +100,19 @@ html, body {
 }
 #shipStatus h2 {
   font-size: clamp(1.2rem, 1.8vw, 1.4rem);
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   border-bottom: 1px solid #00ffaa;
-  padding-bottom: .3em;
+  padding-bottom: .25em;
 }
 #shipStatus ul { list-style: none; padding: 0; margin: 0; }
-#shipStatus li { padding: 5px 0 4px; border-bottom: 1px dotted #008877; }
+#shipStatus li {
+  padding: 2px 0 !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+  font-size: 0.9em; /* slightly smaller text */
+  border-bottom: 1px dotted #008877;
+}
+#shipStatus li:last-child { border-bottom: none; }
 #shipStatus li.sunk { color: #ff4444; text-decoration: line-through; font-weight: bold; opacity: .7; }
 
 /* Cells */
@@ -123,7 +130,7 @@ html, body {
 .cell.miss { background-color: #999; opacity: .7; cursor: default; }
 .cell.sunk-part { background-color: #8B0000; box-shadow: 0 0 15px 5px #FF4500; color: #FFD700; }
 
-/* Controls (desktop/tablet) */
+/* Controls */
 .controls {
   display: flex; gap: .8rem; flex-wrap: wrap; justify-content: center;
   margin: .6rem 0 1rem;
@@ -138,7 +145,7 @@ html, body {
 }
 .controls button:hover, .controls button:focus { background-color: #004d4d; color: #aaffcc; }
 
-/* Nice (non-functional) scrollbars */
+/* Scrollbars */
 body, html { scrollbar-width: thin; scrollbar-color: #56c8f7 #181c23; }
 html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,247,0.17); }
 
@@ -148,7 +155,7 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
   background-color: red; transform: rotate(-45deg); transform-origin: center; pointer-events: none;
 }
 
-/* Sunk effects */
+/* Shake animation */
 @keyframes shake {
   0%, 100% { transform: translate(0, 0); }
   20% { transform: translate(-2px, 1px); }
@@ -157,8 +164,6 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
   80% { transform: translate(2px, -2px); }
 }
 .shake { animation: shake .5s ease; }
-.sunk-overlay { position: fixed; inset: 0; background: rgba(255,0,0,0); pointer-events: none; opacity: 0; transition: opacity .3s, background .3s; z-index: 999; }
-.sunk-overlay.show { opacity: 1; background: rgba(255,0,0,.25); }
 
 /* Game Over overlay */
 #gameOverOverlay { position: fixed; inset: 0; display: grid; place-items: center; background: #000 url('ships/over.png') center/cover no-repeat !important; z-index: 100000; }
@@ -195,79 +200,14 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
 }
 
 /* =========================
-   MOBILE (≤ 560px): single source of truth
+   MOBILE (≤ 560px): clean rules
    ========================= */
 @media (max-width: 560px) {
-  /* Fit everything cleanly in-viewport */
   :root {
-    --controlsH: 60px;                         /* footer buttons height */
-    --boardSize: min(84vw, 56svh, 340px);      /* big but safe */
+    --controlsH: 60px;
+    --boardSize: min(86vw, 44vh, 320px); /* safe size */
   }
 
-  /* Header: tight stack */
-  .game-section { grid-template-rows: auto auto 1fr; padding-top: .8rem !important; }
-  .game-section h1 { margin: 0 0 .2rem !important; line-height: .95 !important; }
-  .game-section br { display: none !important; }        /* hide accidental <br> */
-  #message, #torpedoCount { margin: 0 !important; line-height: 1 !important; }
-  #torpedoCount { transform: translateY(-.18rem); }
-
-  /* Controls fixed at bottom, smaller */
-  .controls {
-    position: fixed !important; left: 0; right: 0; bottom: env(safe-area-inset-bottom, 0);
-    height: var(--controlsH) !important;
-    padding: 8px max(10px, env(safe-area-inset-left)) 8px max(10px, env(safe-area-inset-right)) !important;
-    margin: 0 !important; gap: 10px !important; z-index: 2000;
-    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.35) 35%, rgba(0,0,0,.6) 100%);
-    backdrop-filter: blur(2px);
-  }
-  .controls button { flex: 1 1 auto !important; max-width: 44% !important; font-size: .82rem !important; padding: .48em .7em !important; }
-
-  /* Reserve space above footer */
-  .game-section, #gameContainer { padding-bottom: calc(var(--controlsH) + 10px) !important; }
-
-  /* Stack game vertically */
-  #gameContainer { flex-direction: column !important; align-items: center !important; gap: 10px !important; margin-top: 0 !important; }
-
-  /* Board: centered with guaranteed gap below */
-  #board {
-    width: var(--boardSize) !important; height: var(--boardSize) !important;
-    gap: 1.8px !important; padding-top: 2px !important; border-width: 1.5px !important;
-    margin: .12rem auto 14px auto !important;  /* hard gap above ship panel */
-  }
-
-  /* Ship panel: slimmer than screen, scrolls internally if needed */
-  #shipStatus {
-    width: 80vw !important; max-width: 80vw !important;
-    font-size: .9rem !important; padding: .7rem .6rem !important;
-    margin: 14px auto 10px auto !important;     /* gaps above/below */
-    max-height: calc(100svh - var(--boardSize) - var(--controlsH) - 28px) !important;
-    overflow: auto !important;
-  }
-}
-
-/* =========================
-   TABLET (561–900px)
-   ========================= */
-@media (min-width: 561px) and (max-width: 900px) {
-  .game-section { padding-top: .8rem !important; }
-  .game-section h1 { margin: 0 0 .3rem !important; }
-  #message, #torpedoCount { margin: 0 !important; line-height: 1 !important; }
-  #torpedoCount { transform: translateY(-.12rem); }
-  #gameContainer { margin-top: .3rem !important; }
-}
-
-/* =========================
-   DESKTOP (≥ 901px)
-   ========================= */
-@media (min-width: 901px) {
-  .game-section { padding-top: 2.5rem !important; }      /* breathing room for logo */
-  .game-section h1 { margin: 0 0 .4rem !important; }
-  #message, #torpedoCount { margin: .15rem 0 !important; line-height: 1.2 !important; }
-  #gameContainer { margin-top: 1rem !important; }        /* space between text and board */
-}
-/* === MOBILE CLEAN: Board + Ship panel same width, no overlap === */
-@media (max-width: 560px) {
-  /* Tight header */
   .game-section {
     grid-template-rows: auto 1fr auto;
     padding: 8px 10px !important;
@@ -275,57 +215,46 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
   .game-section h1 { margin: 0 0 .2rem !important; line-height: .95 !important; }
   #message, #torpedoCount { margin: 0 !important; line-height: 1 !important; }
 
-  /* Stack: board → ship status */
   #gameContainer {
     flex-direction: column !important;
     align-items: center !important;
-    justify-content: flex-start !important;
     gap: 12px !important;
-    max-height: none !important;
     margin: 0 !important;
     padding: 0 !important;
   }
 
-  /* Board size variable */
-  :root { --boardSize: min(86vw, 44vh, 340px); }
-
-  /* Board */
   #board {
     width: var(--boardSize) !important;
     height: var(--boardSize) !important;
-    margin: 4px auto 10px !important;
+    margin: 4px auto 8px !important;
     gap: 1.6px !important;
     padding: 4px !important;
     border-width: 1.5px !important;
   }
 
-  /* Ship Status: EXACT same width as board */
   #shipStatus {
-    width: var(--boardSize) !important;      /* matches board */
+    width: var(--boardSize) !important;
     max-width: var(--boardSize) !important;
     margin: 0 auto 10px auto !important;
-    padding: .7rem .6rem !important;
-    font-size: .95rem !important;
+    padding: .6rem .5rem !important;
+    font-size: .85rem !important;
+    line-height: 1.2 !important;
     max-height: 28vh !important;
     overflow: auto !important;
-    box-sizing: border-box !important;
   }
-  #shipStatus h2 { font-size: 1rem !important; }
+  #shipStatus h2 { font-size: .95rem !important; margin-bottom: 4px !important; }
+  #shipStatus li { font-size: .85rem !important; padding: 1px 0 !important; line-height: 1.2 !important; }
 
-  /* Buttons in flow */
   .controls {
     position: static !important;
-    height: auto !important;
-    padding: 8px 0 !important;
-    margin: 0 !important;
+    margin-top: 6px !important;
     gap: 10px !important;
     background: transparent !important;
-    backdrop-filter: none !important;
   }
   .controls button {
     flex: 1 1 auto !important;
     max-width: 46% !important;
-    font-size: .9rem !important;
-    padding: .6em .9em !important;
+    font-size: .85rem !important;
+    padding: .5em .8em !important;
   }
 }
