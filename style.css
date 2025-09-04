@@ -331,3 +331,139 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
   }
   #shipStatus h2 { font-size: 1rem; }
 }
+/* ==== FINAL MOBILE PATCH: kill message/torpedo gap + enlarge board ==== */
+@media (max-width: 560px) {
+  /* 1) If your HTML has a <br> between the two lines, hide it on mobile */
+  .game-section br { display: none !important; }
+
+  /* 2) Absolutely zero vertical spacing between message + torpedoes */
+  .game-section #message,
+  .game-section #torpedoCount {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+  }
+
+  /* Optionally pull them even tighter by a hair */
+  .game-section #torpedoCount { transform: translateY(-0.15rem); }
+
+  /* 3) Make the board bigger but still guaranteed to fit */
+  :root {
+    /* Bigger than before, but capped by viewport height so nothing spills */
+    --boardSize: min(88vw, 58svh, 360px);
+  }
+  #board {
+    width: var(--boardSize) !important;
+    height: var(--boardSize) !important;
+    padding-top: 2px !important;
+    margin-top: 0.12rem !important; /* tiny breathing room under torpedoes */
+  }
+
+  /* snug container spacing */
+  #gameContainer {
+    margin-top: 0 !important;
+    gap: 8px !important;
+  }
+
+  /* ship panel uses leftover height; scrolls internally if needed */
+  #shipStatus {
+    width: 92vw !important;
+    max-width: 92vw !important;
+    max-height: calc(100svh - var(--boardSize) - 120px) !important;
+    overflow: auto !important;
+  }
+}
+/* === MOBILE FINAL TWEAKS: lower logo, kill gap between lines, keep board snug === */
+@media (max-width: 560px) {
+  /* 1) Lower the whole title stack slightly so the logo isn't too high */
+  .game-section {
+    padding-top: 1.1rem !important;   /* was 0 */
+  }
+
+  /* 2) Tighten the inner header stack */
+  .game-section h1 {
+    margin: 0 0 0.25rem !important;   /* a little breathing below the logo */
+    line-height: 0.95 !important;
+  }
+
+  /* If your subtitle is a <p>, keep it tight too */
+  .game-section > p:first-of-type {
+    margin: 0 0 0.25rem !important;
+    line-height: 1.05 !important;
+  }
+
+  /* 3) Absolutely remove space between action text and torpedo count */
+  #message,
+  #torpedoCount {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+  }
+  /* pull torpedo count up a hair if needed */
+  #torpedoCount { transform: translateY(-0.22rem); }
+
+  /* 4) Keep the board tight under the text */
+  #gameContainer { margin-top: 0.25rem !important; }
+  #board { padding-top: 2px !important; margin-top: 0.1rem !important; }
+
+  /* 5) Slightly larger board while staying inside the viewport */
+  :root { --boardSize: min(90vw, 60svh, 380px); }
+  #board { width: var(--boardSize) !important; height: var(--boardSize) !important; }
+}
+
+/* === Tablet/Small Desktop: similar feel (optional) === */
+@media (min-width: 561px) and (max-width: 900px) {
+  .game-section { padding-top: 0.8rem !important; }
+  .game-section h1 { margin: 0 0 0.3rem !important; }
+  #message, #torpedoCount { margin: 0 !important; line-height: 1 !important; }
+  #torpedoCount { transform: translateY(-0.18rem); }
+  #gameContainer { margin-top: 0.3rem !important; }
+}
+/* === Desktop / Web App: Add breathing room at the very top === */
+@media (min-width: 901px) {
+  .game-section {
+    padding-top: 2.5rem !important;   /* give space above logo */
+  }
+
+  .game-section h1 {
+    margin-top: 0 !important;
+    margin-bottom: 0.4rem !important;
+  }
+
+  #message,
+  #torpedoCount {
+    margin: 0.15rem 0 !important;
+    line-height: 1.2 !important;
+  }
+
+  #gameContainer {
+    margin-top: 1rem !important;      /* space between text and board */
+  }
+}
+
+/* === Mobile: Hug everything tightly === */
+@media (max-width: 560px) {
+  .game-section {
+    padding-top: 0.8rem !important;   /* keep logo close, but not glued */
+  }
+
+  .game-section h1 {
+    margin: 0 0 0.15rem !important;
+    line-height: 1 !important;
+  }
+
+  #message,
+  #torpedoCount {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+  }
+
+  #torpedoCount { transform: translateY(-0.2rem); }
+
+  #gameContainer {
+    margin-top: 0.3rem !important;
+  }
+}
