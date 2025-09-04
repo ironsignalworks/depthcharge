@@ -3,11 +3,11 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100svh;              /* lock to viewport height */
+  height: 100svh;
   min-height: 100svh;
-  overflow: hidden;            /* absolutely no scroll */
+  overflow: hidden; /* absolutely no scroll */
   font-family: "Roboto Mono", monospace;
-  font-size: 62.5%;            /* 1rem = 10px */
+  font-size: 62.5%; /* 1rem = 10px */
   background: url('bg.png') center/cover no-repeat #000;
   color: #00ffaa;
   text-shadow: 0 0 6px #00ffaa;
@@ -31,10 +31,10 @@ html, body {
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr auto; /* title/message | game | controls (desktop) */
   align-items: start;
   justify-items: center;
-  padding: 1.2rem 1.2rem 0 1.2rem;
+  padding: 0 1.2rem 0 1.2rem; /* no top padding */
   background: rgba(0,0,0,0.6);
 }
 
@@ -42,13 +42,15 @@ html, body {
 .game-section h1 {
   font-family: "Press Start 2P", monospace;
   font-size: clamp(2.2rem, 3.5vw, 3.2rem);
-  margin: 0.2em 0 0.05em 0;
+  margin: 0.05rem 0 0.12rem 0; /* very tight */
+  line-height: 2.90;
   text-shadow: 0 0 12px #00ffaa, 0 0 24px #00ffaa44;
 }
 .game-section p, #message, #torpedoCount {
-  font-size: clamp(1.4rem, 2vw, 1.8rem);
-  margin: 0.3em 0 0.7em 0;
   font-family: "Roboto Mono", monospace;
+  font-size: clamp(2.3rem, 2vw, 1.8rem);
+  margin: 0.05rem 0; /* tightened */
+  line-height: 1.05;
 }
 
 /* ===== Main container ===== */
@@ -60,7 +62,7 @@ html, body {
   width: 100%;
   max-width: 96dvw;
   max-height: calc(100svh - 10rem);
-  margin: 0 auto;
+  margin: 0.15rem auto 0 auto; /* pulled right up under text */
   flex-wrap: nowrap;
 }
 
@@ -74,6 +76,7 @@ html, body {
   gap: clamp(2px, 0.6vmin, 4px);
   background: rgba(0, 77, 77, 0.8);
   padding: clamp(4px, 0.8vmin, 8px);
+  padding-top: 2px; /* tighten to text */
   border: 2px solid #00ffaa;
   border-radius: 8px;
   box-shadow: 0 0 15px #00ffaa;
@@ -129,10 +132,10 @@ html, body {
 .cell.miss { background-color: #999; opacity: 0.7; cursor: default; }
 .cell.sunk-part { background-color: #8B0000; box-shadow: 0 0 15px 5px #FF4500; color: #FFD700; }
 
-/* ===== Controls ===== */
+/* ===== Controls (desktop/tablet) ===== */
 .controls {
   display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;
-  margin: 0.8rem 0 1rem 0;
+  margin: 0.6rem 0 1rem 0;
 }
 .controls button {
   padding: 0.6em 1.0em;
@@ -150,7 +153,7 @@ html, body {
   color: #aaffcc;
 }
 
-/* ===== Scrollbars (disabled anyway) ===== */
+/* ===== Pretty (non-functional) scrollbars ===== */
 body, html { scrollbar-width: thin; scrollbar-color: #56c8f7 #181c23; }
 html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,247,0.17); }
 
@@ -225,8 +228,6 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
   top: auto !important; left: auto !important; transform: none !important;
 }
 #sunkPopup.hidden { display: none !important; }
-
-/* Sunk title uses Roboto Mono (only main/game-over titles use 2P) */
 #sunkShipName {
   order: 0;
   font-family: "Roboto Mono", monospace;
@@ -236,8 +237,6 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
   margin: 0 0 1rem 0;
   text-align: center;
 }
-
-/* Sunk image */
 #sunkImage {
   order: 1;
   display: block !important;
@@ -252,17 +251,51 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
   box-shadow: 0 12px 32px rgba(0,0,0,0.6);
 }
 
-/* ==== MOBILE STACK (no scroll, balanced spacing) ==== */
+/* ==== MOBILE: buttons above the board, tight spacing, no scroll ==== */
 @media (max-width: 560px) {
   :root{
-    --controlsH: 74px;                        /* bottom bar height */
-    --headerH: clamp(76px, 15vh, 112px);      /* title + messages */
-    /* Make board smaller so ship panel + buttons always fit */
-    --boardSize: min(72vw, 40svh, 270px);
+    --headerH: clamp(56px, 12vh, 92px);      /* smaller title+messages */
+    --boardSize: min(70vw, 38svh, 260px);    /* compact board */
   }
 
   html, body { overflow: hidden; height: 100svh; }
 
+  /* Reorder grid on mobile: title/message | controls | game */
+  .game-section {
+    grid-template-rows: auto auto 1fr;
+    padding-top: 0 !important;
+  }
+
+  /* Header stack—kill residual gaps */
+  .game-section h1 { margin: 0 !important; }
+  #message,
+  #torpedoCount {
+    margin: 15px !important;         /* <<< key fix: no extra space */
+    line-height: 1 !important;
+    font-size: clamp(1.3rem, 3.8vw, 1.6rem) !important;
+  }
+
+  /* Controls under title (not fixed) */
+  .controls {
+    position: static !important;
+    height: auto;
+    padding: 0.3rem 0;
+    margin: 0.15rem 0;
+    gap: 10px;
+    background: none;
+    backdrop-filter: none;
+    z-index: auto;
+    width: 100%;
+    justify-content: center;
+  }
+  .controls button {
+    flex: 1 1 auto;
+    max-width: 46%;
+    padding: 0.6em 0.8em;
+    font-size: 0.95rem;
+  }
+
+  /* Game area stacks: board then ship panel */
   #gameContainer {
     flex-direction: column;
     align-items: center;
@@ -270,56 +303,31 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
     gap: 10px;
     width: 100%;
     max-width: 100dvw;
-    max-height: calc(100svh - var(--controlsH));
-    padding-bottom: 6px;
+    max-height: calc(100svh - var(--headerH));
+    margin-top: 0 !important;
+    padding-bottom: 0;
   }
 
-  .game-section { grid-template-rows: auto 1fr auto; padding-top: 8px; }
-  .game-section h1 { margin-top: .2rem; }
-  #message, #torpedoCount { margin: .2rem 0 .4rem; }
-
+  /* Tight board chrome */
   #board {
     width: var(--boardSize);
     height: var(--boardSize);
-    min-width: 180px;
-    min-height: 180px;
+    min-width: 180px; min-height: 180px;
     gap: 1.5px;
     padding: 4px;
+    padding-top: 2px !important;
     border-width: 1.5px;
+    margin-top: 0.12rem !important; /* tiny breathing room */
   }
 
+  /* Ship panel uses leftover height; internal scroll only if long */
   #shipStatus {
     width: 92vw;
     max-width: 92vw;
     margin-top: 6px;
-    max-height: calc(100svh - var(--headerH) - var(--controlsH) - var(--boardSize) - 20px);
+    max-height: calc(100svh - var(--headerH) - var(--boardSize) - 16px);
     overflow: auto;
     font-size: 0.95rem;
   }
   #shipStatus h2 { font-size: 1rem; }
-
-  .controls {
-    position: fixed;
-    left: 0; right: 0;
-    bottom: env(safe-area-inset-bottom, 0);
-    height: var(--controlsH);
-    padding: 8px max(10px, env(safe-area-inset-left)) 10px max(10px, env(safe-area-inset-right));
-    margin: 0;
-    gap: 10px;
-    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.35) 35%, rgba(0,0,0,.55) 100%);
-    backdrop-filter: blur(2px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10060;
-  }
-  .controls button {
-    flex: 1 1 auto;
-    max-width: 46%;
-    padding: 0.6em 0.8em;
-    font-size: 0.9rem;
-  }
-
-  #sunkPopup { z-index: 10070 !important; }
-  #gameOverOverlay { z-index: 10080 !important; }
 }
