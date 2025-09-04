@@ -498,3 +498,40 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
     padding: 0.5em 0.7em;
   }
 }
+/* === Mobile fix: keep footer buttons clear of the ship panel === */
+@media (max-width: 560px) {
+  /* Height to reserve for the footer buttons */
+  :root { --controlsH: 72px; }
+
+  /* Keep buttons fixed and above content */
+  .controls {
+    position: fixed !important;
+    left: 0; right: 0;
+    bottom: env(safe-area-inset-bottom, 0);
+    height: var(--controlsH);
+    padding: 10px max(12px, env(safe-area-inset-left)) 12px max(12px, env(safe-area-inset-right));
+    margin: 0 !important;
+    z-index: 2000; /* always above ship panel */
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.35) 35%, rgba(0,0,0,.6) 100%);
+    backdrop-filter: blur(2px);
+  }
+
+  /* Give the main stack bottom padding so content never sits under the footer */
+  #gameContainer,
+  .game-section {
+    padding-bottom: calc(var(--controlsH) + 8px) !important;
+  }
+
+  /* Ship panel must stop above the footer; scroll inside if needed */
+  #shipStatus {
+    /* subtract title area, board, footer, and a little spacing */
+    max-height: calc(
+      100svh - var(--boardSize) - var(--controlsH) - 28px
+    ) !important;
+    overflow: auto !important;
+    margin-bottom: 8px !important;  /* visual gap above the footer */
+  }
+
+  /* Ensure the board itself never hides behind the footer if resized */
+  #board { margin-bottom: 8px !important; }
+}
