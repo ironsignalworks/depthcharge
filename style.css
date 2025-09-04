@@ -467,3 +467,34 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
     margin-top: 0.3rem !important;
   }
 }
+/* === Mobile: shrink board + ship panel by ~15% === */
+@media (max-width: 560px) {
+  :root {
+    /* reduce board by ~15% */
+    --boardSize: min(60vw, 32svh, 220px);
+  }
+
+  #board {
+    width: var(--boardSize);
+    height: var(--boardSize);
+    gap: 1.2px;         /* tighten gaps */
+    padding: 3px;       /* smaller padding */
+  }
+
+  #shipStatus {
+    width: 78vw;        /* narrower */
+    max-width: 78vw;
+    font-size: 0.85rem; /* smaller text */
+    padding: 0.6rem 0.5rem;
+  }
+
+  #shipStatus h2 {
+    font-size: 0.9rem;
+  }
+
+  /* buttons shrink slightly to match */
+  .controls button {
+    font-size: 0.85rem;
+    padding: 0.5em 0.7em;
+  }
+}
