@@ -1,13 +1,15 @@
-/* ===== Base: no scroll, full-viewport ===== */
+/* =========================
+   BASE (no scroll, full-viewport)
+   ========================= */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100svh;
   min-height: 100svh;
-  overflow: hidden; /* absolutely no scroll */
+  overflow: hidden;                    /* no page scroll */
   font-family: "Roboto Mono", monospace;
-  font-size: 62.5%; /* 1rem = 10px */
+  font-size: 62.5%;                    /* 1rem = 10px */
   background: url('bg.png') center/cover no-repeat #000;
   color: #00ffaa;
   text-shadow: 0 0 6px #00ffaa;
@@ -15,45 +17,40 @@ html, body {
 }
 *, *::before, *::after { box-sizing: inherit; }
 
-/* ===== Responsive sizing vars (desktop/tablet) ===== */
+/* Layout vars (desktop/tablet defaults) */
 :root {
   --gap: clamp(12px, 2.2vmin, 24px);
   --sidebarW: clamp(160px, 19vw, 260px);
-  --boardSize: clamp(
-    180px,
-    min(58vmin, 68svh, calc(96dvw - var(--sidebarW) - var(--gap) - 16px)),
-    480px
-  );
+  --boardSize: clamp(180px, min(58vmin, 68svh, calc(96dvw - var(--sidebarW) - var(--gap) - 16px)), 480px);
 }
 
-/* ===== Section fills viewport ===== */
 .game-section {
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-rows: auto 1fr auto; /* title/message | game | controls (desktop) */
+  grid-template-rows: auto 1fr auto;   /* title | game | controls (desktop) */
   align-items: start;
   justify-items: center;
-  padding: 0 1.2rem 0 1.2rem; /* no top padding */
+  padding: 0 1.2rem;                   /* no top padding by default */
   background: rgba(0,0,0,0.6);
 }
 
-/* Headline uses Press Start 2P; rest uses Roboto Mono */
+/* Headline uses 2P; rest uses Roboto Mono */
 .game-section h1 {
   font-family: "Press Start 2P", monospace;
   font-size: clamp(2.2rem, 3.5vw, 3.2rem);
-  margin: 0.05rem 0 0.12rem 0; /* very tight */
+  margin: .05rem 0 .12rem;
   line-height: .92;
   text-shadow: 0 0 12px #00ffaa, 0 0 24px #00ffaa44;
 }
 .game-section p, #message, #torpedoCount {
   font-family: "Roboto Mono", monospace;
   font-size: clamp(1.3rem, 2vw, 1.8rem);
-  margin: 0.05rem 0; /* tightened */
+  margin: .05rem 0;
   line-height: 1.05;
 }
 
-/* ===== Main container ===== */
+/* Main row (board + sidebar) */
 #gameContainer {
   display: flex;
   gap: var(--gap);
@@ -62,11 +59,11 @@ html, body {
   width: 100%;
   max-width: 96dvw;
   max-height: calc(100svh - 10rem);
-  margin: 0.15rem auto 0 auto; /* pulled right up under text */
+  margin: .15rem auto 0;               /* tight under text */
   flex-wrap: nowrap;
 }
 
-/* ===== Board ===== */
+/* Board */
 #board {
   width: var(--boardSize);
   height: var(--boardSize);
@@ -76,7 +73,7 @@ html, body {
   gap: clamp(2px, 0.6vmin, 4px);
   background: rgba(0, 77, 77, 0.8);
   padding: clamp(4px, 0.8vmin, 8px);
-  padding-top: 2px; /* tighten to text */
+  padding-top: 2px;
   border: 2px solid #00ffaa;
   border-radius: 8px;
   box-shadow: 0 0 15px #00ffaa;
@@ -84,7 +81,7 @@ html, body {
   background-clip: padding-box;
 }
 
-/* ===== Sidebar ===== */
+/* Sidebar */
 #shipStatus {
   width: var(--sidebarW);
   min-width: 160px;
@@ -94,7 +91,7 @@ html, body {
   background: rgba(0, 34, 34, 0.92);
   border: 2px solid #00ffaa;
   border-radius: 8px;
-  padding: 1rem 0.7rem;
+  padding: 1rem .7rem;
   box-shadow: 0 0 15px #00ffaa;
   font-size: clamp(1.1rem, 1.5vw, 1.4rem);
   text-align: center;
@@ -103,15 +100,15 @@ html, body {
 }
 #shipStatus h2 {
   font-size: clamp(1.2rem, 1.8vw, 1.4rem);
-  margin: 0 0 8px 0;
+  margin: 0 0 8px;
   border-bottom: 1px solid #00ffaa;
-  padding-bottom: 0.3em;
+  padding-bottom: .3em;
 }
 #shipStatus ul { list-style: none; padding: 0; margin: 0; }
-#shipStatus li { padding: 5px 0 4px 0; border-bottom: 1px dotted #008877; }
-#shipStatus li.sunk { color: #ff4444; text-decoration: line-through; font-weight: bold; opacity: 0.7; }
+#shipStatus li { padding: 5px 0 4px; border-bottom: 1px dotted #008877; }
+#shipStatus li.sunk { color: #ff4444; text-decoration: line-through; font-weight: bold; opacity: .7; }
 
-/* ===== Cells ===== */
+/* Cells */
 #board .cell { position: relative; }
 .cell {
   width: 100%; height: 100%; aspect-ratio: 1 / 1;
@@ -119,51 +116,39 @@ html, body {
   border: 1px solid #00ffaa;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
-  font-size: 1.5rem;
-  font-weight: bold;
-  font-family: "Roboto Mono", monospace;
-  color: yellow;
-  text-shadow: 0 0 5px orange;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
+  font-size: 1.5rem; font-weight: bold; color: yellow; text-shadow: 0 0 5px orange;
+  background-position: center; background-repeat: no-repeat; background-size: contain;
 }
 .cell.hit  { background-color: #ff3333; box-shadow: 0 0 10px #ff5555; cursor: default; }
-.cell.miss { background-color: #999; opacity: 0.7; cursor: default; }
+.cell.miss { background-color: #999; opacity: .7; cursor: default; }
 .cell.sunk-part { background-color: #8B0000; box-shadow: 0 0 15px 5px #FF4500; color: #FFD700; }
 
-/* ===== Controls (desktop/tablet) ===== */
+/* Controls (desktop/tablet) */
 .controls {
-  display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;
-  margin: 0.6rem 0 1rem 0;
+  display: flex; gap: .8rem; flex-wrap: wrap; justify-content: center;
+  margin: .6rem 0 1rem;
 }
 .controls button {
-  padding: 0.6em 1.0em;
+  padding: .6em 1em;
   font-size: clamp(1.1rem, 1.8vw, 1.4rem);
-  background-color: #002222;
-  color: #00ffaa;
-  border: 2px solid #00ffaa;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+  background-color: #002222; color: #00ffaa;
+  border: 2px solid #00ffaa; border-radius: 6px;
+  cursor: pointer; transition: background-color .3s, color .3s;
   font-family: "Roboto Mono", monospace;
 }
-.controls button:hover, .controls button:focus {
-  background-color: #004d4d;
-  color: #aaffcc;
-}
+.controls button:hover, .controls button:focus { background-color: #004d4d; color: #aaffcc; }
 
-/* ===== Pretty (non-functional) scrollbars ===== */
+/* Nice (non-functional) scrollbars */
 body, html { scrollbar-width: thin; scrollbar-color: #56c8f7 #181c23; }
 html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,247,0.17); }
 
-/* ===== Red strike line ===== */
+/* Red strike line */
 .red-strike {
   position: absolute; top: 50%; left: 0; width: 100%; height: 2px;
   background-color: red; transform: rotate(-45deg); transform-origin: center; pointer-events: none;
 }
 
-/* ===== Sunk effects ===== */
+/* Sunk effects */
 @keyframes shake {
   0%, 100% { transform: translate(0, 0); }
   20% { transform: translate(-2px, 1px); }
@@ -171,22 +156,12 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
   60% { transform: translate(-3px, 2px); }
   80% { transform: translate(2px, -2px); }
 }
-.shake { animation: shake 0.5s ease; }
+.shake { animation: shake .5s ease; }
+.sunk-overlay { position: fixed; inset: 0; background: rgba(255,0,0,0); pointer-events: none; opacity: 0; transition: opacity .3s, background .3s; z-index: 999; }
+.sunk-overlay.show { opacity: 1; background: rgba(255,0,0,.25); }
 
-.sunk-overlay {
-  position: fixed; inset: 0; background: rgba(255, 0, 0, 0.0);
-  pointer-events: none; opacity: 0;
-  transition: opacity 0.3s ease, background 0.3s ease;
-  z-index: 999;
-}
-.sunk-overlay.show { opacity: 1; background: rgba(255, 0, 0, 0.25); }
-
-/* ===== GAME OVER overlay ===== */
-#gameOverOverlay {
-  position: fixed; inset: 0; display: grid; place-items: center;
-  background: #000 url('ships/over.png') center/cover no-repeat !important;
-  z-index: 100000;
-}
+/* Game Over overlay */
+#gameOverOverlay { position: fixed; inset: 0; display: grid; place-items: center; background: #000 url('ships/over.png') center/cover no-repeat !important; z-index: 100000; }
 #gameOverOverlay.hidden { display: none; }
 #gameOverOverlay h1 {
   font-family: "Press Start 2P", monospace;
@@ -195,403 +170,98 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
   text-shadow: 0 0 8px rgba(255,0,0,0.8), 0 0 20px rgba(255,0,0,0.5);
   animation: gameover-pulse 1.2s infinite alternate ease-in-out;
 }
-@keyframes gameover-pulse { from { transform: scale(0.98); opacity: .9; } to { transform: scale(1.02); opacity: 1; } }
+@keyframes gameover-pulse { from { transform: scale(.98); opacity: .9; } to { transform: scale(1.02); opacity: 1; } }
 
-/* Center Play Again button */
+/* Play Again button */
 #gameOverOverlay .overlay-content { text-align: center; }
 #playAgainButton {
-  display: block;
-  margin: 1.2rem auto 0;
-  padding: 0.7em 1.2em;
+  display: block; margin: 1.2rem auto 0; padding: .7em 1.2em;
   font-size: clamp(1.1rem, 1.8vw, 1.4rem);
-  background-color: #002222;
-  color: #00ffaa;
-  border: 2px solid #00ffaa;
-  border-radius: 6px;
-  cursor: pointer;
-  text-shadow: 0 0 6px #00ffaa;
-  transition: background-color 0.3s, color 0.3s, transform .05s;
+  background-color: #002222; color: #00ffaa; border: 2px solid #00ffaa; border-radius: 6px;
+  cursor: pointer; text-shadow: 0 0 6px #00ffaa; transition: background-color .3s, color .3s, transform .05s;
   font-family: "Roboto Mono", monospace;
 }
-#playAgainButton:hover, #playAgainButton:focus {
-  background-color: #004d4d;
-  color: #aaffcc;
-}
+#playAgainButton:hover, #playAgainButton:focus { background-color: #004d4d; color: #aaffcc; }
 
-/* ===== Sunk popup ===== */
-#sunkPopup {
-  position: fixed !important; inset: 0 !important;
-  display: flex !important; flex-direction: column !important;
-  align-items: center !important; justify-content: center !important;
-  background: rgba(0,0,0,0.55) !important;
-  z-index: 10050 !important;
-  top: auto !important; left: auto !important; transform: none !important;
-}
+/* Sunk popup */
+#sunkPopup { position: fixed !important; inset: 0 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; background: rgba(0,0,0,.55) !important; z-index: 10050 !important; }
 #sunkPopup.hidden { display: none !important; }
-#sunkShipName {
-  order: 0;
-  font-family: "Roboto Mono", monospace;
-  font-size: clamp(1.6rem, 4.2vw, 2.4rem);
-  color: #ffdddd;
-  text-shadow: 0 0 10px rgba(255,0,0,0.7);
-  margin: 0 0 1rem 0;
-  text-align: center;
-}
+#sunkShipName { order: 0; font-family: "Roboto Mono", monospace; font-size: clamp(1.6rem, 4.2vw, 2.4rem); color: #ffdddd; text-shadow: 0 0 10px rgba(255,0,0,0.7); margin: 0 0 1rem; text-align: center; }
 #sunkImage {
-  order: 1;
-  display: block !important;
-  margin: 0 auto !important;
-  position: static !important;
-  max-width: min(80dvw, 80vmin) !important;
-  max-height: 60svh !important;
-  width: auto !important;
-  height: auto !important;
-  object-fit: contain !important;
-  image-rendering: pixelated;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+  order: 1; display: block !important; margin: 0 auto !important; position: static !important;
+  max-width: min(80dvw, 80vmin) !important; max-height: 60svh !important;
+  width: auto !important; height: auto !important; object-fit: contain !important;
+  image-rendering: pixelated; box-shadow: 0 12px 32px rgba(0,0,0,0.6);
 }
 
-/* ==== MOBILE: buttons above the board, tight spacing, no scroll ==== */
+/* =========================
+   MOBILE (≤ 560px): single source of truth
+   ========================= */
 @media (max-width: 560px) {
-  :root{
-    --headerH: clamp(56px, 12vh, 92px);      /* smaller title+messages */
-    --boardSize: min(70vw, 38svh, 260px);    /* compact board */
-  }
-
-  html, body { overflow: hidden; height: 100svh; }
-
-  /* Reorder grid on mobile: title/message | controls | game */
-  .game-section {
-    grid-template-rows: auto auto 1fr;
-    padding-top: 0 !important;
-  }
-
-  /* Header stack—kill residual gaps */
-  .game-section h1 { margin: 0 !important; }
-  #message,
-  #torpedoCount {
-    margin: 0 !important;         /* <<< key fix: no extra space */
-    line-height: 1 !important;
-    font-size: clamp(1.3rem, 3.8vw, 1.6rem) !important;
-  }
-
-  /* Controls under title (not fixed) */
-  .controls {
-    position: static !important;
-    height: auto;
-    padding: 0.3rem 0;
-    margin: 0.15rem 0;
-    gap: 10px;
-    background: none;
-    backdrop-filter: none;
-    z-index: auto;
-    width: 100%;
-    justify-content: center;
-  }
-  .controls button {
-    flex: 1 1 auto;
-    max-width: 46%;
-    padding: 0.6em 0.8em;
-    font-size: 0.95rem;
-  }
-
-  /* Game area stacks: board then ship panel */
-  #gameContainer {
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-    width: 100%;
-    max-width: 100dvw;
-    max-height: calc(100svh - var(--headerH));
-    margin-top: 0 !important;
-    padding-bottom: 0;
-  }
-
-  /* Tight board chrome */
-  #board {
-    width: var(--boardSize);
-    height: var(--boardSize);
-    min-width: 180px; min-height: 180px;
-    gap: 1.5px;
-    padding: 4px;
-    padding-top: 2px !important;
-    border-width: 1.5px;
-    margin-top: 0.12rem !important; /* tiny breathing room */
-  }
-
-  /* Ship panel uses leftover height; internal scroll only if long */
-  #shipStatus {
-    width: 92vw;
-    max-width: 92vw;
-    margin-top: 6px;
-    max-height: calc(100svh - var(--headerH) - var(--boardSize) - 16px);
-    overflow: auto;
-    font-size: 0.95rem;
-  }
-  #shipStatus h2 { font-size: 1rem; }
-}
-/* ==== FINAL MOBILE PATCH: kill message/torpedo gap + enlarge board ==== */
-@media (max-width: 560px) {
-  /* 1) If your HTML has a <br> between the two lines, hide it on mobile */
-  .game-section br { display: none !important; }
-
-  /* 2) Absolutely zero vertical spacing between message + torpedoes */
-  .game-section #message,
-  .game-section #torpedoCount {
-    display: block !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: 1 !important;
-  }
-
-  /* Optionally pull them even tighter by a hair */
-  .game-section #torpedoCount { transform: translateY(-0.15rem); }
-
-  /* 3) Make the board bigger but still guaranteed to fit */
+  /* Fit everything cleanly in-viewport */
   :root {
-    /* Bigger than before, but capped by viewport height so nothing spills */
-    --boardSize: min(88vw, 58svh, 360px);
-  }
-  #board {
-    width: var(--boardSize) !important;
-    height: var(--boardSize) !important;
-    padding-top: 2px !important;
-    margin-top: 0.12rem !important; /* tiny breathing room under torpedoes */
+    --controlsH: 60px;                         /* footer buttons height */
+    --boardSize: min(84vw, 56svh, 340px);      /* big but safe */
   }
 
-  /* snug container spacing */
-  #gameContainer {
-    margin-top: 0 !important;
-    gap: 8px !important;
-  }
-
-  /* ship panel uses leftover height; scrolls internally if needed */
-  #shipStatus {
-    width: 92vw !important;
-    max-width: 92vw !important;
-    max-height: calc(100svh - var(--boardSize) - 120px) !important;
-    overflow: auto !important;
-  }
-}
-/* === MOBILE FINAL TWEAKS: lower logo, kill gap between lines, keep board snug === */
-@media (max-width: 560px) {
-  /* 1) Lower the whole title stack slightly so the logo isn't too high */
-  .game-section {
-    padding-top: 1.1rem !important;   /* was 0 */
-  }
-
-  /* 2) Tighten the inner header stack */
-  .game-section h1 {
-    margin: 0 0 0.25rem !important;   /* a little breathing below the logo */
-    line-height: 0.95 !important;
-  }
-
-  /* If your subtitle is a <p>, keep it tight too */
-  .game-section > p:first-of-type {
-    margin: 0 0 0.25rem !important;
-    line-height: 1.05 !important;
-  }
-
-  /* 3) Absolutely remove space between action text and torpedo count */
-  #message,
-  #torpedoCount {
-    display: block !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: 1 !important;
-  }
-  /* pull torpedo count up a hair if needed */
-  #torpedoCount { transform: translateY(-0.22rem); }
-
-  /* 4) Keep the board tight under the text */
-  #gameContainer { margin-top: 0.25rem !important; }
-  #board { padding-top: 2px !important; margin-top: 0.1rem !important; }
-
-  /* 5) Slightly larger board while staying inside the viewport */
-  :root { --boardSize: min(90vw, 60svh, 380px); }
-  #board { width: var(--boardSize) !important; height: var(--boardSize) !important; }
-}
-
-/* === Tablet/Small Desktop: similar feel (optional) === */
-@media (min-width: 561px) and (max-width: 900px) {
-  .game-section { padding-top: 0.8rem !important; }
-  .game-section h1 { margin: 0 0 0.3rem !important; }
+  /* Header: tight stack */
+  .game-section { grid-template-rows: auto auto 1fr; padding-top: .8rem !important; }
+  .game-section h1 { margin: 0 0 .2rem !important; line-height: .95 !important; }
+  .game-section br { display: none !important; }        /* hide accidental <br> */
   #message, #torpedoCount { margin: 0 !important; line-height: 1 !important; }
-  #torpedoCount { transform: translateY(-0.18rem); }
-  #gameContainer { margin-top: 0.3rem !important; }
-}
-/* === Desktop / Web App: Add breathing room at the very top === */
-@media (min-width: 901px) {
-  .game-section {
-    padding-top: 2.5rem !important;   /* give space above logo */
-  }
+  #torpedoCount { transform: translateY(-.18rem); }
 
-  .game-section h1 {
-    margin-top: 0 !important;
-    margin-bottom: 0.4rem !important;
-  }
-
-  #message,
-  #torpedoCount {
-    margin: 0.15rem 0 !important;
-    line-height: 1.2 !important;
-  }
-
-  #gameContainer {
-    margin-top: 1rem !important;      /* space between text and board */
-  }
-}
-
-/* === Mobile: Hug everything tightly === */
-@media (max-width: 560px) {
-  .game-section {
-    padding-top: 0.8rem !important;   /* keep logo close, but not glued */
-  }
-
-  .game-section h1 {
-    margin: 0 0 0.15rem !important;
-    line-height: 1 !important;
-  }
-
-  #message,
-  #torpedoCount {
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: 1 !important;
-  }
-
-  #torpedoCount { transform: translateY(-0.2rem); }
-
-  #gameContainer {
-    margin-top: 0.3rem !important;
-  }
-}
-/* === Mobile: shrink board + ship panel by ~15% === */
-@media (max-width: 560px) {
-  :root {
-    /* reduce board by ~15% */
-    --boardSize: min(60vw, 32svh, 220px);
-  }
-
-  #board {
-    width: var(--boardSize);
-    height: var(--boardSize);
-    gap: 1.2px;         /* tighten gaps */
-    padding: 3px;       /* smaller padding */
-  }
-
-  #shipStatus {
-    width: 78vw;        /* narrower */
-    max-width: 78vw;
-    font-size: 0.85rem; /* smaller text */
-    padding: 0.6rem 0.5rem;
-  }
-
-  #shipStatus h2 {
-    font-size: 0.9rem;
-  }
-
-  /* buttons shrink slightly to match */
-  .controls button {
-    font-size: 0.85rem;
-    padding: 0.5em 0.7em;
-  }
-}
-/* === Mobile fix: keep footer buttons clear of the ship panel === */
-@media (max-width: 560px) {
-  /* Height to reserve for the footer buttons */
-  :root { --controlsH: 72px; }
-
-  /* Keep buttons fixed and above content */
+  /* Controls fixed at bottom, smaller */
   .controls {
-    position: fixed !important;
-    left: 0; right: 0;
-    bottom: env(safe-area-inset-bottom, 0);
-    height: var(--controlsH);
-    padding: 10px max(12px, env(safe-area-inset-left)) 12px max(12px, env(safe-area-inset-right));
-    margin: 0 !important;
-    z-index: 2000; /* always above ship panel */
+    position: fixed !important; left: 0; right: 0; bottom: env(safe-area-inset-bottom, 0);
+    height: var(--controlsH) !important;
+    padding: 8px max(10px, env(safe-area-inset-left)) 8px max(10px, env(safe-area-inset-right)) !important;
+    margin: 0 !important; gap: 10px !important; z-index: 2000;
     background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.35) 35%, rgba(0,0,0,.6) 100%);
     backdrop-filter: blur(2px);
   }
+  .controls button { flex: 1 1 auto !important; max-width: 44% !important; font-size: .82rem !important; padding: .48em .7em !important; }
 
-  /* Give the main stack bottom padding so content never sits under the footer */
-  #gameContainer,
-  .game-section {
-    padding-bottom: calc(var(--controlsH) + 8px) !important;
+  /* Reserve space above footer */
+  .game-section, #gameContainer { padding-bottom: calc(var(--controlsH) + 10px) !important; }
+
+  /* Stack game vertically */
+  #gameContainer { flex-direction: column !important; align-items: center !important; gap: 10px !important; margin-top: 0 !important; }
+
+  /* Board: centered with guaranteed gap below */
+  #board {
+    width: var(--boardSize) !important; height: var(--boardSize) !important;
+    gap: 1.8px !important; padding-top: 2px !important; border-width: 1.5px !important;
+    margin: .12rem auto 14px auto !important;  /* hard gap above ship panel */
   }
 
-  /* Ship panel must stop above the footer; scroll inside if needed */
+  /* Ship panel: slimmer than screen, scrolls internally if needed */
   #shipStatus {
-    /* subtract title area, board, footer, and a little spacing */
-    max-height: calc(
-      100svh - var(--boardSize) - var(--controlsH) - 28px
-    ) !important;
+    width: 80vw !important; max-width: 80vw !important;
+    font-size: .9rem !important; padding: .7rem .6rem !important;
+    margin: 14px auto 10px auto !important;     /* gaps above/below */
+    max-height: calc(100svh - var(--boardSize) - var(--controlsH) - 28px) !important;
     overflow: auto !important;
-    margin-bottom: 8px !important;  /* visual gap above the footer */
   }
-
-  /* Ensure the board itself never hides behind the footer if resized */
-  #board { margin-bottom: 8px !important; }
 }
-/* === MOBILE FINE-TUNE: bigger board, slimmer panel, smaller buttons === */
-@media (max-width: 560px) {
-  /* Smaller footer bar + smaller buttons */
-  :root { --controlsH: 60px; }
 
-  .controls {
-    position: fixed !important;
-    left: 0; right: 0;
-    bottom: env(safe-area-inset-bottom, 0);
-    height: var(--controlsH);
-    padding: 8px max(10px, env(safe-area-inset-left)) 8px max(10px, env(safe-area-inset-right));
-    margin: 0 !important;
-    gap: 10px;
-    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.35) 35%, rgba(0,0,0,.6) 100%);
-    backdrop-filter: blur(2px);
-    z-index: 2000;
-  }
-  .controls button {
-    flex: 1 1 auto;
-    max-width: 44%;
-    font-size: 0.82rem;            /* smaller text */
-    padding: 0.48em 0.7em;         /* slimmer buttons */
-  }
+/* =========================
+   TABLET (561–900px)
+   ========================= */
+@media (min-width: 561px) and (max-width: 900px) {
+  .game-section { padding-top: .8rem !important; }
+  .game-section h1 { margin: 0 0 .3rem !important; }
+  #message, #torpedoCount { margin: 0 !important; line-height: 1 !important; }
+  #torpedoCount { transform: translateY(-.12rem); }
+  #gameContainer { margin-top: .3rem !important; }
+}
 
-  /* Enlarge the board again (about +15% vs last state) */
-  :root {
-    --boardSize: min(84vw, 56svh, 340px);
-  }
-  #board {
-    width: var(--boardSize) !important;
-    height: var(--boardSize) !important;
-    gap: 1.8px;                    /* keep lines readable */
-    padding: 4px;
-    padding-top: 2px !important;
-    margin-top: 0.12rem !important;
-    margin-bottom: 8px !important; /* space above ship panel */
-  }
-
-  /* Slimmer ship panel — not full width */
-  #shipStatus {
-    width: 80vw !important;        /* narrower than screen */
-    max-width: 80vw !important;
-    margin-left: auto; margin-right: auto;
-    font-size: 0.9rem;
-    padding: 0.7rem 0.6rem;
-    max-height: calc(100svh - var(--boardSize) - var(--controlsH) - 24px) !important;
-    overflow: auto !important;     /* scroll inside if needed */
-    margin-bottom: 8px !important; /* keep off the footer */
-  }
-  #shipStatus h2 { font-size: 0.95rem; }
-
-  /* Make sure the main stack leaves room for the footer */
-  .game-section, #gameContainer { padding-bottom: calc(var(--controlsH) + 8px) !important; }
-
-  /* Header lines stay tight so board sits high */
-  #message, #torpedoCount {
-    margin: 0 !important;
-    line-height: 1 !important;
-  }
+/* =========================
+   DESKTOP (≥ 901px)
+   ========================= */
+@media (min-width: 901px) {
+  .game-section { padding-top: 2.5rem !important; }      /* breathing room for logo */
+  .game-section h1 { margin: 0 0 .4rem !important; }
+  #message, #torpedoCount { margin: .15rem 0 !important; line-height: 1.2 !important; }
+  #gameContainer { margin-top: 1rem !important; }        /* space between text and board */
 }
