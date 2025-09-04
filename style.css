@@ -43,12 +43,12 @@ html, body {
   font-family: "Press Start 2P", monospace;
   font-size: clamp(2.2rem, 3.5vw, 3.2rem);
   margin: 0.05rem 0 0.12rem 0; /* very tight */
-  line-height: 2.90;
+  line-height: .92;
   text-shadow: 0 0 12px #00ffaa, 0 0 24px #00ffaa44;
 }
 .game-section p, #message, #torpedoCount {
   font-family: "Roboto Mono", monospace;
-  font-size: clamp(2.3rem, 2vw, 1.8rem);
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
   margin: 0.05rem 0; /* tightened */
   line-height: 1.05;
 }
@@ -270,7 +270,7 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
   .game-section h1 { margin: 0 !important; }
   #message,
   #torpedoCount {
-    margin: 15px !important;         /* <<< key fix: no extra space */
+    margin: 0 !important;         /* <<< key fix: no extra space */
     line-height: 1 !important;
     font-size: clamp(1.3rem, 3.8vw, 1.6rem) !important;
   }
