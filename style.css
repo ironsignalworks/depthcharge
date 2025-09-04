@@ -535,3 +535,63 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
   /* Ensure the board itself never hides behind the footer if resized */
   #board { margin-bottom: 8px !important; }
 }
+/* === MOBILE FINE-TUNE: bigger board, slimmer panel, smaller buttons === */
+@media (max-width: 560px) {
+  /* Smaller footer bar + smaller buttons */
+  :root { --controlsH: 60px; }
+
+  .controls {
+    position: fixed !important;
+    left: 0; right: 0;
+    bottom: env(safe-area-inset-bottom, 0);
+    height: var(--controlsH);
+    padding: 8px max(10px, env(safe-area-inset-left)) 8px max(10px, env(safe-area-inset-right));
+    margin: 0 !important;
+    gap: 10px;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.35) 35%, rgba(0,0,0,.6) 100%);
+    backdrop-filter: blur(2px);
+    z-index: 2000;
+  }
+  .controls button {
+    flex: 1 1 auto;
+    max-width: 44%;
+    font-size: 0.82rem;            /* smaller text */
+    padding: 0.48em 0.7em;         /* slimmer buttons */
+  }
+
+  /* Enlarge the board again (about +15% vs last state) */
+  :root {
+    --boardSize: min(84vw, 56svh, 340px);
+  }
+  #board {
+    width: var(--boardSize) !important;
+    height: var(--boardSize) !important;
+    gap: 1.8px;                    /* keep lines readable */
+    padding: 4px;
+    padding-top: 2px !important;
+    margin-top: 0.12rem !important;
+    margin-bottom: 8px !important; /* space above ship panel */
+  }
+
+  /* Slimmer ship panel — not full width */
+  #shipStatus {
+    width: 80vw !important;        /* narrower than screen */
+    max-width: 80vw !important;
+    margin-left: auto; margin-right: auto;
+    font-size: 0.9rem;
+    padding: 0.7rem 0.6rem;
+    max-height: calc(100svh - var(--boardSize) - var(--controlsH) - 24px) !important;
+    overflow: auto !important;     /* scroll inside if needed */
+    margin-bottom: 8px !important; /* keep off the footer */
+  }
+  #shipStatus h2 { font-size: 0.95rem; }
+
+  /* Make sure the main stack leaves room for the footer */
+  .game-section, #gameContainer { padding-bottom: calc(var(--controlsH) + 8px) !important; }
+
+  /* Header lines stay tight so board sits high */
+  #message, #torpedoCount {
+    margin: 0 !important;
+    line-height: 1 !important;
+  }
+}
