@@ -265,17 +265,17 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
   #message, #torpedoCount { margin: .15rem 0 !important; line-height: 1.2 !important; }
   #gameContainer { margin-top: 1rem !important; }        /* space between text and board */
 }
-/* === MOBILE RESET: two clean panels, no overlap, no overflow === */
+/* === MOBILE CLEAN: Board + Ship panel same width, no overlap === */
 @media (max-width: 560px) {
-  /* Tight header so content fits */
+  /* Tight header */
   .game-section {
-    grid-template-rows: auto 1fr auto;   /* header | game stack | buttons */
+    grid-template-rows: auto 1fr auto;
     padding: 8px 10px !important;
   }
   .game-section h1 { margin: 0 0 .2rem !important; line-height: .95 !important; }
   #message, #torpedoCount { margin: 0 !important; line-height: 1 !important; }
 
-  /* Stack: board → ship status (both centered) */
+  /* Stack: board → ship status */
   #gameContainer {
     flex-direction: column !important;
     align-items: center !important;
@@ -286,8 +286,10 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
     padding: 0 !important;
   }
 
-  /* Board: modest, never wider than screen nor taller than 44vh */
+  /* Board size variable */
   :root { --boardSize: min(86vw, 44vh, 340px); }
+
+  /* Board */
   #board {
     width: var(--boardSize) !important;
     height: var(--boardSize) !important;
@@ -297,19 +299,20 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
     border-width: 1.5px !important;
   }
 
-  /* Ship Status: slimmer, with its own scroll if needed */
+  /* Ship Status: EXACT same width as board */
   #shipStatus {
-    width: 90vw !important;
-    max-width: 420px !important;
-    margin: 0 auto 10px !important;
+    width: var(--boardSize) !important;      /* matches board */
+    max-width: var(--boardSize) !important;
+    margin: 0 auto 10px auto !important;
     padding: .7rem .6rem !important;
     font-size: .95rem !important;
-    max-height: 28vh !important;       /* <- panel won't push buttons down */
+    max-height: 28vh !important;
     overflow: auto !important;
+    box-sizing: border-box !important;
   }
   #shipStatus h2 { font-size: 1rem !important; }
 
-  /* Buttons: inline, smaller, in normal flow (not fixed) */
+  /* Buttons in flow */
   .controls {
     position: static !important;
     height: auto !important;
