@@ -42,12 +42,22 @@
       <button id="resetButton">Restart Game</button>
       <button id="muteButton">Mute Music</button>
     </div>
-    <div id="gameOverOverlay" class="overlay-container hidden">
-      <div class="overlay-content">
-        <h1>Game Over</h1>
-        <button id="playAgainButton">Play Again</button>
-      </div>
-    </div>
+<div id="gameOverOverlay" class="overlay-container hidden">
+  <div class="overlay-content">
+    <h1>Game Over</h1>
+    <button id="playAgainButton">Play Again</button>
+
+    <!-- put the brand link BELOW the name box -->
+    <a class="brand-link"
+       href="https://ironsignalworks.com"
+       target="_blank"
+       rel="noopener"
+       aria-label="Visit Iron Signal Works">
+      <img src="logo.png" alt="Iron Signal Works logo">
+      <span>Iron Signal Works — Cold Code, Hot Circuits.</span>
+    </a>
+  </div>
+</div>
   </main>
   <!-- Audio -->
   <audio id="hitSound" src="sounds/hit.mp3" preload="auto"></audio>
