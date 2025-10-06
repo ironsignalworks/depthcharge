@@ -25,13 +25,24 @@
   <main class="game-section" role="main">
     <h1>DEPTH CHARGE</h1>
     <p>Wipe out the enemy fleet!</p>
-    <div id="message" aria-live="polite">Make your first move!</div>
-    <div id="torpedoCount"></div>
+
     <div id="gameContainer">
       <div id="board"></div>
       <aside id="shipStatus">
+        <!-- Action text moved to top -->
+        <div id="actionInfo">
+          <div id="message" aria-live="polite">Make your first move!</div>
+          <div id="torpedoCount"></div>
+        </div>
+
+        <!-- Ship status in middle -->
         <h2>Ship Status</h2>
         <ul id="shipsList"></ul>
+
+        <!-- Instructions at bottom -->
+        <div id="statusInfo">
+          <p id="instructions">Click a square to fire. Sink all ships before your torpedoes run out.</p>
+        </div>
       </aside>
       <div id="sunkPopup" class="popup hidden">
         <img id="sunkImage" src="" alt="Sunk Ship">

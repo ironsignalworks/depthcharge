@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const board = [];
   let shipBoard = [];
 
-  // Unlock audio on first interaction (no scroll design, so document body is fine)
+  // Unlock audio on first interaction
   document.body.addEventListener("click", () => {
     if (!hasInteracted && backgroundMusic) {
       backgroundMusic.play().catch(() => {});
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* =================== Firing =================== */
   function fireTorpedo(e) {
-    if (typeof torpedoes !== "undefined" && (torpedoes <= 0 || isGameOver)) return;
+    if (isGameOver || torpedoes <= 0) return;
 
     if (!hasStarted) {
       backgroundMusic.play().catch(() => {});
@@ -159,20 +159,24 @@ document.addEventListener("DOMContentLoaded", () => {
     checkGameOver();
   }
 
-  function handleHit(cell, row, col, shipName) {
-    cell.classList.add("hit");
-    playSound(hitSound);
-    // Visual mark on the clicked cell
-    cell.style.backgroundImage = "url('ships/hit.png')";
+  function setCellImage(cell, url) {
+    if (!cell) return;
+    cell.style.backgroundImage = `url('${url}')`;
     cell.style.backgroundSize = "contain";
     cell.style.backgroundRepeat = "no-repeat";
     cell.style.backgroundPosition = "center";
+  }
+
+  function handleHit(cell, row, col, shipName) {
+    cell.classList.add("hit");
+    playSound(hitSound);
+    setCellImage(cell, 'ships/hit.png');
 
     const ship = ships.find(s => s.name === shipName);
     ship.hits.add(`${row}-${col}`);
 
     if (ship.hits.size === ship.size) {
-      try { triggerSunkEffects(); } catch (e) {}
+      triggerSunkEffects();
       shipsSunk++;
       messageDiv.textContent = `${ship.name} has been sunk!`;
       playSound(sunkSound);
@@ -184,10 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const [r, c] = id.split("-").map(Number);
         const square = board[r][c];
         if (!square) return;
-        square.style.backgroundImage = "url('ships/sunk.png')";
-        square.style.backgroundSize = "contain";
-        square.style.backgroundRepeat = "no-repeat";
-        square.style.backgroundPosition = "center";
+        setCellImage(square, 'ships/sunk.png');
         const strike = document.createElement("div");
         strike.className = "red-strike";
         square.appendChild(strike);
@@ -204,8 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cell.classList.add("miss");
     messageDiv.textContent = "Miss!";
     playSound(missSound);
-    cell.style.backgroundImage = "url('ships/miss.png')";
-    cell.style.backgroundSize = "contain";
+    setCellImage(cell, 'ships/miss.png');
   }
 
   /* =================== Utils =================== */
@@ -230,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* ===== Sunk Popup (no filename text, title on top, Press Start 2P) ===== */
+  /* ===== Sunk Popup ===== */
   function showSunkPopup(shipName, imagePath) {
     const popup = $("sunkPopup");
     const img = $("sunkImage");
@@ -238,27 +238,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (popup.parentElement !== document.body) document.body.appendChild(popup);
 
-    /* Remove stray text/anchors that could render a tiny filename on the right */
     Array.from(popup.childNodes).forEach(n => { if (n.nodeType === 3) n.remove(); });
     popup.querySelectorAll("a").forEach(a => a.remove());
 
-    /* Reset inline styles that might pin NW */
     img.removeAttribute("style");
     popup.removeAttribute("style");
 
-    /* Title above image, centered */
     if (label) label.textContent = `${shipName} Sunk!`;
 
     img.src = imagePath;
     img.alt = `${shipName} Sunk`;
 
-    /* Show + fade (container only) */
     popup.classList.remove("hidden");
     popup.style.opacity = "0";
     popup.style.transition = "opacity 0.25s ease";
     requestAnimationFrame(() => { popup.style.opacity = "1"; });
 
-    /* Auto-hide + clear strike lines */
     setTimeout(() => {
       popup.style.opacity = "0";
       setTimeout(() => {

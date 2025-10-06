@@ -1,161 +1,382 @@
 /* =========================
-   BASE (no scroll, full-viewport)
+   OPTIMIZED: Dark military + Win98 3D boxes
+   - Performance optimized with CSS custom properties
+   - Reduced redundancy and improved maintainability
+   - Consistent spacing and color system
    ========================= */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100svh;
-  min-height: 100svh;
-  overflow: hidden;                    /* no page scroll */
-  font-family: "Roboto Mono", monospace;
-  font-size: 62.5%;                    /* 1rem = 10px */
-  background: url('bg.png') center/cover no-repeat #000;
-  color: #00ffaa;
-  text-shadow: 0 0 6px #00ffaa;
-  box-sizing: border-box;
-}
-*, *::before, *::after { box-sizing: inherit; }
 
-/* Layout vars (desktop/tablet defaults) */
 :root {
-  --gap: clamp(12px, 2.2vmin, 24px);
-  --sidebarW: clamp(160px, 19vw, 260px);
-  --boardSize: clamp(180px, min(58vmin, 68svh, calc(96dvw - var(--sidebarW) - var(--gap) - 16px)), 480px);
+  /* Color system */
+  --bg: #0f1318;
+  --panel: #1a1e26;
+  --panel-top: #2a303a;
+  --accent: #2d4a6b;
+  --accent-2: #1e3049;
+  --muted: #bac4cf;
+  --muted-2: #8a95a3;
+  --danger: #a83a3a;
+  --text-dark: #1a1e26;
+  
+  /* Layout system */
+  --gap: clamp(12px, 2.2vmin, 20px);
+  --boardSize: clamp(320px, min(50vmin, 60vh), 480px);
+  --sidebarW: clamp(200px, 25vw, 300px);
+  
+  /* Win98 bevel system */
+  --bevel-light: rgba(255,255,255,0.85);
+  --bevel-dark: rgba(0,0,0,0.55);
+  --bevel-panel-light: rgba(255,255,255,0.08);
+  --bevel-panel-dark: rgba(0,0,0,0.65);
+  
+  /* Spacing scale */
+  --space-xs: 2px;
+  --space-sm: 4px;
+  --space-md: 8px;
+  --space-lg: 12px;
+  --space-xl: 16px;
+  
+  /* Common gradients */
+  --gradient-panel: linear-gradient(180deg, var(--panel-top), var(--panel));
+  --gradient-button: linear-gradient(180deg, #e6e6e6, #cfcfcf);
+  --gradient-button-hover: linear-gradient(180deg, #f0f0f0, #d8d8d8);
+  --gradient-accent: linear-gradient(180deg, var(--accent), var(--accent-2));
 }
 
+/* Base reset */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+html, body {
+  height: 100svh;
+  background: url('bg.png') center/cover no-repeat, linear-gradient(180deg, var(--bg), #080c11);
+  color: var(--muted);
+  font: 62.5% "Press Start 2P", monospace;
+  overflow: hidden;
+}
+
+/* Common component styles */
+.panel {
+  background: var(--gradient-panel);
+  border-radius: 4px;
+  border-top: 2px solid var(--bevel-panel-light);
+  border-left: 2px solid var(--bevel-panel-light);
+  border-bottom: 2px solid var(--bevel-panel-dark);
+  border-right: 2px solid var(--bevel-panel-dark);
+}
+
+.btn {
+  background: var(--gradient-button);
+  border-radius: 2px;
+  border-top: 2px solid var(--bevel-light);
+  border-left: 2px solid var(--bevel-light);
+  border-bottom: 2px solid var(--bevel-dark);
+  border-right: 2px solid var(--bevel-dark);
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 700;
+  transition: transform .06s ease;
+  user-select: none;
+}
+
+.btn:active { transform: translateY(1px); }
+.btn:hover { background: var(--gradient-button-hover); }
+
+/* Layout */
 .game-section {
-  height: 100%;
-  width: 100%;
-  display: grid;
-  grid-template-rows: auto 1fr auto;   /* title | game | controls (desktop) */
-  align-items: start;
-  justify-items: center;
-  padding: 0 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
   background: rgba(0,0,0,0.6);
 }
 
-/* Headline */
-.game-section h1 {
-  font-family: "Press Start 2P", monospace;
-  font-size: clamp(2.2rem, 3.5vw, 3.2rem);
-  margin: .05rem 0 .12rem;
-  line-height: .92;
-  text-shadow: 0 0 12px #00ffaa, 0 0 24px #00ffaa44;
-}
-.game-section p, #message, #torpedoCount {
-  font-family: "Roboto Mono", monospace;
-  font-size: clamp(1.3rem, 2vw, 1.8rem);
-  margin: .05rem 0;
-  line-height: 1.05;
-}
-
-/* Main row (board + sidebar) */
 #gameContainer {
   display: flex;
   gap: var(--gap);
   align-items: flex-start;
   justify-content: center;
-  width: 100%;
-  max-width: 96dvw;
-  max-height: calc(100svh - 10rem);
-  margin: .15rem auto 0;
-  flex-wrap: nowrap;
+  margin: 0 auto 1rem;
+  max-width: min(95vw, 800px);
+}
+
+/* Typography */
+.game-section h1 {
+  font-size: clamp(2.34rem, 4.16vw, 3.64rem);
+  margin: 0 0 0.5rem;
+  color: #ff4444;
+  letter-spacing: .06em;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.8);
+  text-align: center;
+}
+
+.game-section p { 
+  margin: 0 0 1rem; 
+  color: var(--muted-2); 
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem); 
+  text-align: center;
 }
 
 /* Board */
 #board {
-  width: var(--boardSize);
+  width: var(--boardSize); 
   height: var(--boardSize);
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  display: grid; 
+  grid-template-columns: repeat(10, 1fr); 
   grid-template-rows: repeat(10, 1fr);
-  gap: clamp(2px, 0.6vmin, 4px);
-  background: rgba(0, 77, 77, 0.8);
-  padding: clamp(4px, 0.8vmin, 8px);
-  padding-top: 2px;
-  border: 2px solid #00ffaa;
-  border-radius: 8px;
-  box-shadow: 0 0 15px #00ffaa;
-  min-width: 180px; min-height: 180px;
-  background-clip: padding-box;
+  gap: clamp(2px, 0.4vmin, 3px); 
+  padding: clamp(4px, 0.8vmin, 6px);
+  flex-shrink: 0;
+}
+
+/* Cells */
+.cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-size: clamp(1rem, 2vmin, 1.4rem);
+  color: var(--text-dark);
+  border-radius: 1px;
+}
+
+.cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(45,74,107,0.06), rgba(30,48,73,0.08));
+  mix-blend-mode: multiply;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.cell.hit {
+  background: linear-gradient(180deg, var(--danger), #8b2b2b);
+  color: #fff;
+  border-color: rgba(0,0,0,0.7);
+}
+
+.cell.miss {
+  background: linear-gradient(180deg, #7a8590, #6b7682);
+  color: #fff;
+  border-color: rgba(0,0,0,0.6);
+}
+
+.cell.sunk-part { 
+  background: linear-gradient(180deg, #151518, #0a0a0d); 
+  color: #e6e6e6; 
+  border-color: rgba(0,0,0,0.8);
 }
 
 /* Sidebar */
 #shipStatus {
-  width: var(--sidebarW);
-  min-width: 160px;
-  max-width: 280px;
-  max-height: var(--boardSize);
+  width: var(--sidebarW); 
+  height: var(--boardSize);
   overflow: hidden;
-  background: rgba(0, 34, 34, 0.92);
-  border: 2px solid #00ffaa;
-  border-radius: 8px;
-  padding: 1rem .7rem;
-  box-shadow: 0 0 15px #00ffaa;
-  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+  padding: var(--space-md);
+  flex-shrink: 0;
   text-align: center;
-  align-self: flex-start;
-  font-family: "Roboto Mono", monospace;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-#shipStatus h2 {
-  font-size: clamp(1.2rem, 1.8vw, 1.4rem);
-  margin: 0 0 6px;
-  border-bottom: 1px solid #00ffaa;
-  padding-bottom: .25em;
-}
-#shipStatus ul { list-style: none; padding: 0; margin: 0; }
-#shipStatus li {
-  padding: 2px 0 !important;
-  margin: 0 !important;
-  line-height: 1.2 !important;
-  font-size: 0.9em; /* slightly smaller text */
-  border-bottom: 1px dotted #008877;
-}
-#shipStatus li:last-child { border-bottom: none; }
-#shipStatus li.sunk { color: #ff4444; text-decoration: line-through; font-weight: bold; opacity: .7; }
 
-/* Cells */
-#board .cell { position: relative; }
-.cell {
-  width: 100%; height: 100%; aspect-ratio: 1 / 1;
-  background-color: #004d4d;
-  border: 1px solid #00ffaa;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  font-size: 1.5rem; font-weight: bold; color: yellow; text-shadow: 0 0 5px orange;
-  background-position: center; background-repeat: no-repeat; background-size: contain;
+#actionInfo {
+  padding: var(--space-md);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
 }
-.cell.hit  { background-color: #ff3333; box-shadow: 0 0 10px #ff5555; cursor: default; }
-.cell.miss { background-color: #999; opacity: .7; cursor: default; }
-.cell.sunk-part { background-color: #8B0000; box-shadow: 0 0 15px 5px #FF4500; color: #FFD700; }
+
+#message { 
+  font-weight: 700;
+  color: var(--muted);
+  margin: var(--space-xs) 0;
+  padding: var(--space-sm);
+  font-size: clamp(1.27rem, 1.3vw, 1.19rem);
+}
+
+#torpedoCount { 
+  color: var(--muted-2);
+  margin: var(--space-xs) 0;
+  padding: var(--space-sm);
+  font-size: clamp(0.92rem, 1.19vw, 1.08rem);
+}
+
+.ship-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 6px;
+}
+
+#shipStatus h2 {
+  margin: var(--space-xs) 0;
+  padding: var(--space-lg);
+  background: var(--gradient-accent);
+  color: #e8eef5;
+  font-weight: 700;
+  font-size: clamp(1.45rem, 1.4vw, 1.17rem);
+  text-transform: uppercase;
+  border-radius: 2px;
+  border-top: 1px solid var(--bevel-panel-light);
+  border-left: 1px solid var(--bevel-panel-light);
+  border-bottom: 1px solid rgba(0,0,0,0.45);
+  border-right: 1px solid rgba(0,0,0,0.45);
+}
+
+#shipStatus ul { 
+  list-style: none; 
+  padding: 1px;
+}
+
+#shipStatus li { 
+  padding: var(--space-sm);
+  margin: 1px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(1rem, 1.19vw, 1.03rem);
+  color: var(--text-dark);
+  font-weight: 600;
+  border-radius: 1px;
+}
+
+#shipStatus li.sunk { 
+  background: linear-gradient(180deg, #a66, #742); 
+  color: #fff; 
+  text-decoration: line-through; 
+}
+
+#statusInfo { 
+  padding: 3px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+#instructions { 
+  font-size: clamp(0.86rem, 1.08vw, 0.97rem);
+  color: var(--muted-2); 
+  margin: var(--space-xs) 0;
+  padding: 3px;
+  line-height: 1.3;
+}
 
 /* Controls */
-.controls {
-  display: flex; gap: .8rem; flex-wrap: wrap; justify-content: center;
-  margin: .6rem 0 1rem;
+.controls { 
+  display: flex; 
+  gap: 1rem; 
+  justify-content: center; 
 }
+
 .controls button {
-  padding: .6em 1em;
-  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
-  background-color: #002222; color: #00ffaa;
-  border: 2px solid #00ffaa; border-radius: 6px;
-  cursor: pointer; transition: background-color .3s, color .3s;
-  font-family: "Roboto Mono", monospace;
-}
-.controls button:hover, .controls button:focus { background-color: #004d4d; color: #aaffcc; }
-
-/* Scrollbars */
-body, html { scrollbar-width: thin; scrollbar-color: #56c8f7 #181c23; }
-html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,247,0.17); }
-
-/* Red strike line */
-.red-strike {
-  position: absolute; top: 50%; left: 0; width: 100%; height: 2px;
-  background-color: red; transform: rotate(-45deg); transform-origin: center; pointer-events: none;
+  padding: .6em 1.2em; 
+  font-size: clamp(1rem, 1.6vw, 1.2rem); 
+  color: #cc3333;
 }
 
-/* Shake animation */
+.controls button:hover { color: #aa2222; }
+
+/* Game Over overlay */
+#gameOverOverlay { 
+  position: fixed; 
+  inset: 0; 
+  display: grid; 
+  place-items: center; 
+  background: linear-gradient(180deg, rgba(0,0,0,0.8), rgba(0,0,0,0.95)); 
+  z-index: 100000; 
+}
+
+#gameOverOverlay.hidden { display: none; }
+
+#gameOverOverlay h1 { 
+  color: var(--accent); 
+  font-size: clamp(1.8rem, 5vw, 3.5rem);
+  margin: 0 0 2rem;
+}
+
+#gameOverOverlay .overlay-content { 
+  padding: var(--space-xl); 
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+#playAgainButton { 
+  margin: 0 0 1rem; 
+  padding: .6em 1em; 
+  font-size: clamp(1rem, 1.6vw, 1.2rem); 
+  color: #cc3333;
+}
+
+#playAgainButton:hover { color: #aa2222; }
+
+#gameOverOverlay .brand-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  padding: .4em .6em;
+  text-decoration: none;
+  color: var(--muted);
+  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+}
+
+#gameOverOverlay .brand-link img {
+  height: clamp(16px, 2.8vmin, 24px);
+  width: auto;
+  image-rendering: pixelated;
+}
+
+/* Sunk popup */
+#sunkPopup { 
+  position: fixed !important; 
+  inset: 0 !important; 
+  display: flex !important; 
+  flex-direction: column !important;
+  align-items: center !important; 
+  justify-content: center !important; 
+  background: rgba(0,0,0,0.6) !important;
+  z-index: 10050 !important; 
+}
+
+#sunkPopup.hidden { display: none !important; }
+
+#sunkShipName { 
+  color: var(--muted); 
+  margin: 0 0 1rem; 
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  text-align: center;
+}
+
+#sunkImage { 
+  max-width: min(80dvw, 80vmin) !important; 
+  max-height: 60svh !important;
+  height: auto !important; 
+  display: block !important; 
+  image-rendering: pixelated;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+/* Utilities */
+.red-strike { 
+  position: absolute; 
+  top: 50%; 
+  left: 0; 
+  width: 100%; 
+  height: 2px; 
+  background: #8b2b2b; 
+  transform: rotate(-45deg); 
+  pointer-events: none; 
+}
+
+.shake { animation: shake .5s ease; }
+
 @keyframes shake {
   0%, 100% { transform: translate(0, 0); }
   20% { transform: translate(-2px, 1px); }
@@ -163,194 +384,133 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(87,200,
   60% { transform: translate(-3px, 2px); }
   80% { transform: translate(2px, -2px); }
 }
-.shake { animation: shake .5s ease; }
 
-/* Game Over overlay */
-#gameOverOverlay { position: fixed; inset: 0; display: grid; place-items: center; background: #000 url('ships/over.png') center/cover no-repeat !important; z-index: 100000; }
-#gameOverOverlay.hidden { display: none; }
-#gameOverOverlay h1 {
-  font-family: "Press Start 2P", monospace;
-  font-size: clamp(2rem, 6vw, 5rem);
-  color: #ff2020;
-  text-shadow: 0 0 8px rgba(255,0,0,0.8), 0 0 20px rgba(255,0,0,0.5);
-  animation: gameover-pulse 1.2s infinite alternate ease-in-out;
-}
-@keyframes gameover-pulse { from { transform: scale(.98); opacity: .9; } to { transform: scale(1.02); opacity: 1; } }
-
-/* Play Again button */
-#gameOverOverlay .overlay-content { text-align: center; }
-#playAgainButton {
-  display: block; margin: 1.2rem auto 0; padding: .7em 1.2em;
-  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
-  background-color: #002222; color: #00ffaa; border: 2px solid #00ffaa; border-radius: 6px;
-  cursor: pointer; text-shadow: 0 0 6px #00ffaa; transition: background-color .3s, color .3s, transform .05s;
-  font-family: "Roboto Mono", monospace;
-}
-#playAgainButton:hover, #playAgainButton:focus { background-color: #004d4d; color: #aaffcc; }
-
-/* Sunk popup */
-#sunkPopup { position: fixed !important; inset: 0 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; background: rgba(0,0,0,.55) !important; z-index: 10050 !important; }
-#sunkPopup.hidden { display: none !important; }
-#sunkShipName { order: 0; font-family: "Roboto Mono", monospace; font-size: clamp(1.6rem, 4.2vw, 2.4rem); color: #ffdddd; text-shadow: 0 0 10px rgba(255,0,0,0.7); margin: 0 0 1rem; text-align: center; }
-#sunkImage {
-  order: 1; display: block !important; margin: 0 auto !important; position: static !important;
-  max-width: min(80dvw, 80vmin) !important; max-height: 60svh !important;
-  width: auto !important; height: auto !important; object-fit: contain !important;
-  image-rendering: pixelated; box-shadow: 0 12px 32px rgba(0,0,0,0.6);
-}
-/* =========================
-   Game Over — Brand link
-   ========================= */
+/* Apply common styles */
+#board,
+#shipStatus,
+#gameOverOverlay .overlay-content,
 #gameOverOverlay .brand-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: .6rem;
+  background: var(--gradient-panel);
+  border-radius: 4px;
+  border-top: 2px solid var(--bevel-panel-light);
+  border-left: 2px solid var(--bevel-panel-light);
+  border-bottom: 2px solid var(--bevel-panel-dark);
+  border-right: 2px solid var(--bevel-panel-dark);
+}
 
-  margin: .8rem auto 0;
-  padding: .55em .9em;
-  text-decoration: none;
-
-  background: rgba(0, 34, 34, 0.85);
-  color: #00ffaa;
-  border: 2px solid #00ffaa;
-  border-radius: 8px;
-
-  text-shadow: 0 0 6px #00ffaa;
-  box-shadow: 0 0 12px #00ffaa55, inset 0 0 14px #00ffaa22;
-  filter: drop-shadow(0 0 8px #00ffaa44);
-
+.cell,
+#shipStatus li,
+.controls button,
+#playAgainButton {
+  background: var(--gradient-button);
+  border-radius: 2px;
+  border-top: 2px solid var(--bevel-light);
+  border-left: 2px solid var(--bevel-light);
+  border-bottom: 2px solid var(--bevel-dark);
+  border-right: 2px solid var(--bevel-dark);
   cursor: pointer;
-  transition:
-    transform .06s ease,
-    box-shadow .25s ease,
-    background-color .25s ease,
-    color .25s ease,
-    filter .25s ease;
-  will-change: transform, box-shadow, filter;
+  font-family: inherit;
+  font-weight: 700;
+  transition: transform .06s ease;
+  user-select: none;
 }
 
-#gameOverOverlay .brand-link:hover,
-#gameOverOverlay .brand-link:focus-visible {
-  transform: translateY(-1px) scale(1.02);
-  background: rgba(0, 77, 77, 0.9);
-  color: #aaffcc;
-  box-shadow:
-    0 0 16px #00ffaa,
-    0 0 28px #00ffaa55,
-    inset 0 0 18px #00ffaa33;
-  outline: none;
+.cell:active,
+#shipStatus li:active,
+.controls button:active,
+#playAgainButton:active { 
+  transform: translateY(1px); 
 }
 
-#gameOverOverlay .brand-link:active {
-  transform: translateY(0) scale(0.99);
+.cell:hover,
+#shipStatus li:hover,
+.controls button:hover,
+#playAgainButton:hover { 
+  background: var(--gradient-button-hover); 
 }
 
-/* logo + tagline */
-#gameOverOverlay .brand-link img {
-  height: clamp(18px, 3.2vmin, 32px);
-  width: auto;
-  image-rendering: pixelated;
-  display: block;
-  filter: drop-shadow(0 0 3px #00ffaaaa);
-}
-
-#gameOverOverlay .brand-link span {
-  font-family: "Roboto Mono", monospace;
-  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
-  line-height: 1.1;
-  letter-spacing: .02em;
-  white-space: nowrap;
-}
-
-/* strong keyboard focus ring for a11y */
-#gameOverOverlay .brand-link:focus-visible {
-  box-shadow:
-    0 0 0 3px #002222,
-    0 0 0 5px #00ffaa,
-    0 0 18px #00ffaa88,
-    inset 0 0 18px #00ffaa33;
-}
-
-/* motion sensitivity */
-@media (prefers-reduced-motion: reduce) {
-  #gameOverOverlay .brand-link { transition: none; }
-  #gameOverOverlay .brand-link:hover,
-  #gameOverOverlay .brand-link:focus-visible { transform: none; }
-}
-
-/* Mobile polish (≤ 560px) */
-@media (max-width: 560px) {
-  #gameOverOverlay .brand-link {
-    max-width: min(86vw, var(--boardSize));
-    width: max-content;
-    gap: .5rem;
-    padding: .55em .8em;
-  }
-  #gameOverOverlay .brand-link img { height: 20px; }
-  #gameOverOverlay .brand-link span {
-    font-size: .95rem;
-    white-space: normal;              /* allow wrap on small screens */
-    text-align: center;
-  }
-}
-
-/* =========================
-   MOBILE (≤ 560px): clean rules
-   ========================= */
-@media (max-width: 560px) {
-  :root {
-    --controlsH: 60px;
-    --boardSize: min(86vw, 44vh, 320px); /* safe size */
-  }
-
-  .game-section {
-    grid-template-rows: auto 1fr auto;
-    padding: 8px 10px !important;
-  }
-  .game-section h1 { margin: 0 0 .2rem !important; line-height: .95 !important; }
-  #message, #torpedoCount { margin: 0 !important; line-height: 1 !important; }
-
+/* Responsive */
+@media (max-width: 768px) {
+  .game-section { padding: .8rem .6rem; }
+  
   #gameContainer {
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 12px !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
   }
-
-  #board {
-    width: var(--boardSize) !important;
-    height: var(--boardSize) !important;
-    margin: 4px auto 8px !important;
-    gap: 1.6px !important;
-    padding: 4px !important;
-    border-width: 1.5px !important;
-  }
-
+  
+  #board,
   #shipStatus {
-    width: var(--boardSize) !important;
-    max-width: var(--boardSize) !important;
-    margin: 0 auto 10px auto !important;
-    padding: .6rem .5rem !important;
-    font-size: .85rem !important;
-    line-height: 1.2 !important;
-    max-height: 28vh !important;
-    overflow: auto !important;
+    width: min(90vw, 400px);
   }
-  #shipStatus h2 { font-size: .95rem !important; margin-bottom: 4px !important; }
-  #shipStatus li { font-size: .85rem !important; padding: 1px 0 !important; line-height: 1.2 !important; }
+  
+  #board { height: min(90vw, 400px); }
+  #shipStatus { height: auto; max-height: none; }
+  
+  .controls { flex-wrap: wrap; gap: .8rem; }
+  .controls button { min-width: 140px; }
+}
 
-  .controls {
-    position: static !important;
-    margin-top: 6px !important;
-    gap: 10px !important;
-    background: transparent !important;
+@media (max-width: 480px) {
+  .game-section { padding: .6rem .4rem; }
+  
+  #board {
+    width: min(95vw, 320px);
+    height: min(95vw, 320px);
+    gap: 1px;
+    padding: 3px;
   }
+  
+  #shipStatus {
+    width: min(95vw, 320px);
+    padding: .6rem;
+  }
+  
+  #actionInfo { padding: 6px; }
+  
+  #message, #torpedoCount {
+    margin: var(--space-xs) 0;
+    padding: 3px;
+    font-size: clamp(0.86rem, 1.08vw, 0.97rem);
+  }
+  
+  .ship-section { padding: 6px; }
+  
+  #shipStatus h2 {
+    font-size: clamp(1rem, 1.35vw, 1.08rem);
+    padding: 6px;
+    margin: var(--space-xs) 0;
+  }
+  
+  #shipStatus ul { padding: 3px; }
+  
+  #shipStatus li {
+    font-size: clamp(0.81rem, 1.08vw, 0.9rem);
+    padding: var(--space-sm);
+    margin: 1px 0;
+  }
+  
+  #statusInfo { padding: 6px; }
+  
+  #instructions {
+    margin: var(--space-xs) 0;
+    padding: 3px;
+    font-size: clamp(0.86rem, 1.08vw, 0.97rem);
+  }
+  
   .controls button {
-    flex: 1 1 auto !important;
-    max-width: 46% !important;
-    font-size: .85rem !important;
-    padding: .5em .8em !important;
+    font-size: 0.9rem;
+    padding: .5em 1em;
+    min-width: 120px;
   }
+}
+
+@media (max-width: 360px) {
+  #board,
+  #shipStatus {
+    width: min(98vw, 280px);
+  }
+  
+  #board { height: min(98vw, 280px); }
 }
