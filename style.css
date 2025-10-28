@@ -50,11 +50,12 @@
 }
 
 html, body {
-  height: 100svh;
+  min-height: 100svh;
   background: url('bg.png') center/cover no-repeat, linear-gradient(180deg, var(--bg), #080c11);
   color: var(--muted);
   font: 62.5% "Press Start 2P", monospace;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* Common component styles */
@@ -431,7 +432,16 @@ html, body {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .game-section { padding: .8rem .6rem; }
+  html, body {
+    height: auto;
+    min-height: 100%;
+    overflow-y: auto;
+  }
+
+  .game-section {
+    padding: .8rem .6rem;
+    justify-content: flex-start;
+  }
   
   #gameContainer {
     flex-direction: column;
